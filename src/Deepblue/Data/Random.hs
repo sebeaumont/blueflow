@@ -1,8 +1,9 @@
 -- random data is very useful 
-module Deepblue.Data.Random where
+module Deepblue.Data.Random ( nextPosition
+                            , nextGP
+                            ) where
 
 import System.Random
-import Control.Monad.State
 
 --import Geodetics.LatLongParser
 import Geodetics.Ellipsoids
@@ -14,26 +15,27 @@ import Geodetics.Geodetic
 gpWGS84 :: String -> Maybe (Geodetic WGS84)
 gpWGS84 = readGroundPosition WGS84
 
-type RandomS = State StdGen
+--type RandomS = State StdGen
 
-nextR :: (Int, Int) -> RandomS Int
-nextR = state . randomR
 
-nextH :: RandomS String
+nextR :: (Int, Int) -> IO Int
+nextR = randomRIO
+
+nextH :: IO String
 nextH = do
   ns <- nextR (0,1)
   if ns > 0
     then return "N"
     else return "S"
 
-nextE :: RandomS String
+nextE :: IO String
 nextE = do
   ns <- nextR (0,1)
   if ns > 0
     then return "E"
     else return "W"
     
-nextPosition :: RandomS String
+nextPosition :: IO String
 nextPosition = do
   ns <- nextH
   ew <- nextE
@@ -47,7 +49,9 @@ nextPosition = do
     (show ndeg) ++ " " ++ (show nmin) ++ "." ++ (show nmdc) ++ ns ++ " " ++
     (show edeg) ++ " " ++ (show emin) ++ "." ++ (show emdc) ++ ew
 
-nextGP :: RandomS (Maybe (Geodetic WGS84))
+
+nextGP :: IO (Maybe (Geodetic WGS84))
 nextGP = gpWGS84 <$> nextPosition
+
 
 
