@@ -1,3 +1,2 @@
 packages: . ./geodetics ./hnetcdf
 
-with-compiler: /usr/local/bin/ghc

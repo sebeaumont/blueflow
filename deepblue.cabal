@@ -34,13 +34,13 @@ library
                      
 executable deepblue
   main-is:             Main.hs
-  -- other-modules:       
+  -- other-modules:       Deepblue.Data.Random
   -- other-extensions:    
   build-depends:       base
                      , gloss
                      , deepblue
 
-  hs-source-dirs:      src
+  hs-source-dirs:      exe
   default-language:    Haskell2010
   ghc-options: -O3 -Wall -threaded
   
