@@ -1,22 +1,13 @@
 -- random data is very useful 
 module Deepblue.Data.Random ( nextPosition
-                            , nextGP
                             ) where
 
 import System.Random
-
---import Geodetics.LatLongParser
-import Geodetics.Ellipsoids
-import Geodetics.Geodetic
+--import Deepblue.Data.Geodetics
 
 -- TODO for lat long we constrain each piece, degrees, minutes... so in fact we implicity
 -- impose the distance constraints
-
-gpWGS84 :: String -> Maybe (Geodetic WGS84)
-gpWGS84 = readGroundPosition WGS84
-
---type RandomS = State StdGen
-
+--
 
 nextR :: (Int, Int) -> IO Int
 nextR = randomRIO
@@ -50,8 +41,6 @@ nextPosition = do
     (show edeg) ++ " " ++ (show emin) ++ "." ++ (show emdc) ++ ew
 
 
-nextGP :: IO (Maybe (Geodetic WGS84))
-nextGP = gpWGS84 <$> nextPosition
 
 
 

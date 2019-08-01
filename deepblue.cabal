@@ -19,16 +19,25 @@ cabal-version:       >=1.10
 -- deepblue
 --                   
 library
-        exposed-modules:     Deepblue.Data.Random
+        exposed-modules:     Deepblue.Data.Geodetics
+                           , Deepblue.Data.Random
+                           , Deepblue.Data.Units
+                           , Deepblue.Data.IO
 
+                           
         build-depends:       base
                            , geodetics
+                           , dimensional
+                           , time > 1.9
+                           , text
+                           , attoparsec
                            , containers
                            , hnetcdf
                            , random
                            , mtl
                            , repa
                            , vector
+                           , hmatrix
         hs-source-dirs:      src
         default-language:    Haskell2010
         ghc-options:         -O3 -Wall
@@ -42,11 +51,25 @@ executable deepblue
   build-depends:       base
                      , gloss
                      , deepblue
+                     , hmatrix
 
   hs-source-dirs:      exe
   default-language:    Haskell2010
   ghc-options: -O3 -Wall -threaded
 
+executable events
+  main-is:             Main.hs
+  -- other-modules:    
+  -- other-extensions:    
+  build-depends:       base
+                     , deepblue
+
+
+  hs-source-dirs:      utl
+  default-language:    Haskell2010
+  ghc-options: -O3 -Wall -threaded
+
+  
 executable data
   main-is:             Main.hs
   -- other-modules:    
@@ -54,6 +77,7 @@ executable data
   build-depends:       base
                      , deepblue
                      , hnetcdf
+                     , dimensional
                      , vector
                      , repa
                      , containers
