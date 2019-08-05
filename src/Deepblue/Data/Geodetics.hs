@@ -8,14 +8,12 @@ module Deepblue.Data.Geodetics ( gpWGS84
                                , GPSPosition
                             ) where
 
-
---import Geodetics.LatLongParser
 import Geodetics.Ellipsoids
 import Geodetics.Geodetic
 import Geodetics.Grid
 import Geodetics.TransverseMercator
-import Numeric.Units.Dimensional.Prelude
---import qualified Prelude
+
+import Numeric.Units.Dimensional.Prelude (Length, degree, meter, one, (*~), kilo)
 
 
 -- | Read latitude and lontitude ground position in WGS84
@@ -74,9 +72,16 @@ utmZone31FalseOrigin = utmZone29FalseOrigin
 utmZone31 :: GridTM WGS84
 utmZone31 = mkGridTM utmZone31TrueOrigin utmZone31FalseOrigin (0.9996 *~ one)
 
+
+-- | Helper function to extract northings and easting for a WGS84 position in a given UTM zone
+utmZoneCoords :: GridTM WGS84 -> Maybe (Geodetic WGS84) -> Maybe (Length Double, Length Double)
+utmZoneCoords z p = (\x -> (eastings x, northings x)) <$> toGrid z <$> p
+
+{-
 -- | Helper function to extract northings and easting for a ground position in a given UTM zone
 utmZoneCoords :: GridTM WGS84 -> String ->  Maybe (Length Double, Length Double)
 utmZoneCoords z p = (\x -> (eastings x, northings x)) <$> toGrid z <$> gpWGS84 p
+-}
 
 -- | mapping a fn over a (homogneous) tuple (usually a cartesian point in some length unit)
 mapPoint :: (a -> b) -> (a, a) -> (b, b)
