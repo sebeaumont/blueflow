@@ -7,13 +7,15 @@ module Deepblue.Data.IO ( Accel3D
                         -- events
                         , GPSEventFrame
                         , timestamp
-                        , latlong
+                        , position
                         , maximumAccel
                         , averageAccel
                         -- utils
                         , eventsFromFile
                         , readEvents
                         , parseEvent
+                        , justAssocs
+                        , mapAssocs
                         ) where
 
 import System.IO
@@ -33,7 +35,7 @@ import Deepblue.Data.Geodetics
 -- | GPS logger data frame
 
 data GPSEventFrame = GPSEventFrame { datetime_ :: !(Maybe UTCTime)
-                                   , position_ :: !(Maybe GPSPosition)
+                                   , position_ :: !(Maybe WGS84Position)
                                    , avgAccel_ :: !Accel3D
                                    , maxAccel_ :: !Accel3D
                                    } deriving (Show)
@@ -42,9 +44,9 @@ timestamp :: GPSEventFrame -> Maybe UTCTime
 {- INLINE -}
 timestamp = datetime_
 
-latlong :: GPSEventFrame -> Maybe GPSPosition
+position :: GPSEventFrame -> Maybe WGS84Position
 {- INLINE -}
-latlong = position_
+position = position_
 
 averageAccel :: GPSEventFrame -> Accel3D
 {- INLINE -}
@@ -64,7 +66,7 @@ parseISOtime = iso8601ParseM . T.unpack
 
 -- | Parse Text to GPSPosition
 {- INLINE -}
-parseLatLon :: T.Text -> Maybe GPSPosition
+parseLatLon :: T.Text -> Maybe WGS84Position
 parseLatLon  = gpWGS84 . T.unpack
 
 {- INLINE -}
@@ -107,12 +109,24 @@ type EventFrames =  Map.IntMap GPSEventFrame
 nevents :: EventFrames -> Int
 nevents = size
 
-
 {-
-maximum :: Ord a => (EventFrame -> a) -> EventFrames -> EventFrame
-maximum f a =
- foldr 
+TODO event ordering... by orderable record key
+hint use first element (head) of map (elems) and recurse folding over tail 
+maximumEvent :: Ord x => (GPSEventFrame -> x) -> EventFrames -> (Int, GPSEventFrame)
+maximumEvent f evs = foldlWithKey' foo a  evs where
+foo :: GPSEventFrame -> Int -> GPSEventFrame -> GPEventFrame
+foo n a b = if a > b then (n a) else (n b)
+
+map over events frame skipping missing values with a field accessor
 -}
+
+{- INLINE -}
+justAssocs :: (GPSEventFrame -> Maybe a) -> EventFrames -> [(Int, a)]
+justAssocs f m = [(k, a) | (k, Just a) <- [(k, f x) | (k, x) <- (assocs m)]]
+
+{-INLINE -}
+mapAssocs :: (a -> b) -> [(k, a)] -> [(k, b)]
+mapAssocs f l = [(k, f a) | (k, a) <- l]
 
 -- | Read event data from file into EventFrames Map
 

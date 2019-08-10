@@ -1,4 +1,4 @@
-{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE NoImplicitPrelude, DataKinds #-}
 module Deepblue.Data.Units ( Accel3D
                            , toAccel3D
                            , asList
@@ -9,15 +9,16 @@ module Deepblue.Data.Units ( Accel3D
                            , compareAccel3Dz
                            , toMPS2
                            , mps2
+                           , gridToPoint
                            ) where
 
   
 import Numeric.Units.Dimensional.Prelude
 import qualified Prelude as P
--- import Data.Ord
 
+-- this type signature here required DataKinds and a ticked type constructor!
 {- INLINE -}
--- mps2 :: Dimension what is the (abbreviated) type
+mps2 :: Unit 'NonMetric DAcceleration Double
 mps2 = meter / (second * second)
 
 {- INLINE -}
@@ -71,6 +72,13 @@ compareAccel3Dz a b = compare za zb where
   za = P.abs $ (z a) /~ mps2
   zb = P.abs $ (z b) /~ mps2
 
+-- | TODO Dimensionaless quantities for ordering? or are dimensions => Ord?
+
+
+-- | Grid meters to dimensionless graphics points 
+
+gridToPoint :: (Length Double, Length Double) -> (Double, Double)
+gridToPoint (e, n) = (e /~ meter, n /~ meter)
   
 -- | Instances for comparison
 
