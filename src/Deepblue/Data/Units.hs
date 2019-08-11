@@ -77,8 +77,8 @@ compareAccel3Dz a b = compare za zb where
 
 -- | Grid meters to dimensionless graphics points 
 
-gridToPoint :: (Length Double, Length Double) -> (Double, Double)
-gridToPoint (e, n) = (e /~ meter, n /~ meter)
+gridToPoint :: (Length Double, Length Double) -> (Float, Float)
+gridToPoint (e, n) = (realToFrac $ e /~ meter, realToFrac $ n /~ meter)
   
 -- | Instances for comparison
 

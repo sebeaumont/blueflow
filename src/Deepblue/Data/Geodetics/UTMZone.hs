@@ -85,10 +85,12 @@ utmZoneCoords :: GridTM WGS84 -> String ->  Maybe (Length Double, Length Double)
 utmZoneCoords z p = (\x -> (eastings x, northings x)) <$> toGrid z <$> gpWGS84 p
 -}
 
--- | take a WGS84Position and transform to a simple 2D point - this
--- need to lookup the UTM zone for the earth position and apply the
--- appropriate transformation to the transverse Mercator grid.
-positionToPoint :: WGS84Position -> (Double, Double)
+-- | take a WGS84Position and transform to a simple 2D point for
+-- plotting.  Here lookup the UTM zone for the earth position
+-- and apply the appropriate transformation to the transverse Mercator
+-- grid.
+
+positionToPoint :: WGS84Position -> (Float, Float)
 positionToPoint p = gridToPoint $ utmZoneCoords (positionZone p) p
 
 

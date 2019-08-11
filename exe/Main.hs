@@ -3,7 +3,10 @@ module Main where
 
 import Graphics.Gloss
 import Graphics.Gloss.Interface.Environment
--- import Deepblue.Data.Random
+
+import Deepblue.Data.Geodetics
+--import Deepblue.Data.Units
+import Deepblue.Data.IO
 
 mapPair :: (a -> b) -> (a, a) -> (b, b)
 mapPair f (a1, a2) = (f a1, f a2)
@@ -69,13 +72,22 @@ isofn = [(x, x) | x <- [0.0,0.1..500.0]]
 drawing :: Point -> Picture
 drawing xy = gridlines feintGrey xy (10,10) <> gridlines lightGrey xy (100,100) <> origin black
 
+-- points from events file
+plotPoints :: [(Int, (Float, Float))] -> Picture
+plotPoints passoc = color red $ line $ [p | (i, p) <- passoc]
+
+{- Try some real plotting -}
+
 -- io, io it's off to work we go...
 main :: IO ()
 main = do
   ssz <- getScreenSize
   putStrLn $ show ssz
-  let xy = mapPair ((/ 2.0) . fromIntegral) ssz
+  events <- eventsFromFile "/Users/seb/data/BlueBox/030719.tsv"
+  putStrLn $ show (nevents events)
+  let ptsa = mapAssocs positionToPoint (justAssocs position events) 
+  --let xy = mapPair ((/ 2.0) . fromIntegral) ssz
   -- paint drawing in full screen with top right corner xy 
-  display FullScreen background (drawing xy)
+  display FullScreen background (plotPoints ptsa)
   
 
