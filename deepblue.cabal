@@ -22,8 +22,9 @@ cabal-version:       >=1.10
 library
         exposed-modules:     Deepblue.Data.Geodetics
                            , Deepblue.Data.Geodetics.UTMZone
+                           , Deepblue.Data.Geodetics.UTMGrid
+                           , Deepblue.Data.Acceleration
                            , Deepblue.Data.Random
-                           , Deepblue.Data.Units
                            , Deepblue.Data.IO
 
                            
@@ -32,7 +33,7 @@ library
                            , dimensional
                            , time > 1.9
                            , text
-                           , attoparsec
+                           , sort
                            , containers
                            , hnetcdf
                            , random
@@ -61,16 +62,15 @@ executable deepblue
   ghc-options: -O3 -Wall -threaded
 
   
--- logger device strong data typing
+-- 
    
-executable events
+executable evdata
   main-is:             Main.hs
   -- other-modules:    
   -- other-extensions:    
   build-depends:       base
                      , deepblue
-
-
+                     
   hs-source-dirs:      utl
   default-language:    Haskell2010
   ghc-options: -O3 -Wall
@@ -78,7 +78,7 @@ executable events
   
 -- netcdf test exe
           
-executable data
+executable netcdf
   main-is:             Main.hs
   -- other-modules:    
   -- other-extensions:    

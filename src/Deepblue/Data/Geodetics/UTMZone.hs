@@ -1,28 +1,20 @@
 module Deepblue.Data.Geodetics.UTMZone 
   where
 
-import Geodetics.Ellipsoids
-import Geodetics.Geodetic
+import Deepblue.Data.Geodetics
 import Geodetics.Grid
 import Geodetics.TransverseMercator
 
-import Numeric.Units.Dimensional.Prelude (Length, degree, meter, one, (*~), kilo)
+import Numeric.Units.Dimensional.Prelude (Length, degree, meter, one, (*~), (/~), kilo)
 
-import Deepblue.Data.Units
+-- | Grid meters to dimensionless graphics points 
 
--- | Latitide and longtitude w.r.t. WSG84 elipsoid conventionally used
--- on (electronic) charts and GPS systems
-
-type WGS84Position = Geodetic WGS84
-
--- | Utility to read latitude and longtitude ground position as WGS84 Position
-
-gpWGS84 :: String -> Maybe (WGS84Position)
-gpWGS84 = readGroundPosition WGS84
-
+gridToPoint :: (Length Double, Length Double) -> (Float, Float)
+gridToPoint (e, n) = (realToFrac $ e /~ meter, realToFrac $ n /~ meter)
 
 -- UTM zones applicable to UK -- todo all of the UTM zones
 
+-- | Universal Transverse Mercator Zone 29
 
 utmZone29TrueOrigin :: WGS84Position
 utmZone29TrueOrigin = Geodetic { latitude = 0 *~ degree
@@ -34,11 +26,13 @@ utmZone29TrueOrigin = Geodetic { latitude = 0 *~ degree
 utmZone29FalseOrigin :: GridOffset
 utmZone29FalseOrigin = GridOffset ((-500) *~ kilo meter) (0 *~ kilo meter) (0 *~ meter)
 
--- | Universal Transverse Mercator Zone 29 
+
 
 utmZone29 :: GridTM WGS84
 utmZone29 = mkGridTM utmZone29TrueOrigin utmZone29FalseOrigin (0.9996 *~ one)
 
+
+-- | Universal Transverse Mercator Zone 30                       
 
 utmZone30TrueOrigin :: WGS84Position
 utmZone30TrueOrigin = Geodetic { latitude = 0 *~ degree
@@ -50,10 +44,11 @@ utmZone30TrueOrigin = Geodetic { latitude = 0 *~ degree
 utmZone30FalseOrigin :: GridOffset
 utmZone30FalseOrigin = utmZone29FalseOrigin
 
--- | Universal Transverse Mercator Zone 30                       
+
 utmZone30 :: GridTM WGS84
 utmZone30 = mkGridTM utmZone30TrueOrigin utmZone30FalseOrigin (0.9996 *~ one)
 
+-- | Universal Transverse Mercator Zone 31
 
 utmZone31TrueOrigin :: WGS84Position
 utmZone31TrueOrigin = Geodetic { latitude = 0 *~ degree
@@ -65,7 +60,6 @@ utmZone31TrueOrigin = Geodetic { latitude = 0 *~ degree
 utmZone31FalseOrigin :: GridOffset
 utmZone31FalseOrigin = utmZone29FalseOrigin
 
--- | Universal Transverse Mercator Zone 31
 utmZone31 :: GridTM WGS84
 utmZone31 = mkGridTM utmZone31TrueOrigin utmZone31FalseOrigin (0.9996 *~ one)
 

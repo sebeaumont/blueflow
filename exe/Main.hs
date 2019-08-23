@@ -2,15 +2,23 @@
 module Main where
 
 import Graphics.Gloss
-import Graphics.Gloss.Interface.Environment
+--import Graphics.Gloss.Interface.Environment
+import Graphics.Gloss.Data.ViewPort
 
 import Deepblue.Data.Geodetics
---import Deepblue.Data.Units
+import Deepblue.Data.Geodetics.UTMGrid
+import Deepblue.Data.Geodetics.UTMZone
+import Deepblue.Data.Acceleration
 import Deepblue.Data.IO
+
+import Data.Maybe
+import Text.Printf
 
 mapPair :: (a -> b) -> (a, a) -> (b, b)
 mapPair f (a1, a2) = (f a1, f a2)
 
+toFloat :: Double -> Float
+toFloat = realToFrac
 
 -- | A (straight) line between two points rather than than a poly line 
 {-# INLINE line1 #-}
@@ -74,20 +82,99 @@ drawing xy = gridlines feintGrey xy (10,10) <> gridlines lightGrey xy (100,100) 
 
 -- points from events file
 plotPoints :: [(Int, (Float, Float))] -> Picture
-plotPoints passoc = color red $ line $ [p | (i, p) <- passoc]
+plotPoints passoc = color blue $ line $ [p | (_, p) <- passoc]
 
-{- Try some real plotting -}
+
+plotEvents :: [LogEventFrame] -> [Picture]
+plotEvents [] = []
+plotEvents (e:es) =
+  let ma = norm $ maximumAccel e
+  in
+    if ma > 6
+    then plotEvent e : plotEvents es
+    else plotEvents es
+
+formatList :: [Double] -> String
+formatList [] = ""
+formatList (x:xs) = printf " %.2f" x ++ formatList xs
+
+{- INLINE -}
+plotEvent :: LogEventFrame -> Picture
+plotEvent e =
+  let ma = maximumAccel e
+      a = toFloat $ (norm ma) / 15
+      (x,y) = positionToPoint $ fromJust $ position e
+      c = makeColor a 0.0 0.0 a
+      t = (show $ fromJust $ timestamp e) ++ (formatList $ asList ma)
+  in pictures [ translate x y $ color c $ circleSolid (4 * a)
+              , translate x y $ color black $ scale 0.02 0.02 $ text t
+              ]
+  
+
+{- hack alert... -}
+
+-- UTM Grid in minutes
+
+utmGrid :: [Path]
+utmGrid = let latLines = zipWith line1 westEdgePoints eastEdgePoints 
+              longLines = zipWith line1 southEdgePoints northEdgePoints
+          in latLines ++ longLines
+
+plotUTMgrid :: Picture
+plotUTMgrid = color feintGrey $ pictures $ map line utmGrid
+
+
+-- should be computed at compile time along with the grid... and any other fixed points
+-- chance to try template Haskell...
+-- xx find a more efficient way of defining points by lat and log using decimal minutes
+
+harbourWestEntrance :: Point
+harbourWestEntrance  = case positionToPoint <$> gpWGS84 "50 42.41N 1 30.07W" of
+  Just p -> p
+  Nothing -> (0,0)
+
+
+harbourEast :: Point
+harbourEast = case positionToPoint <$> gpWGS84 "50 42.61N 1 29.5W" of
+  Just p -> p
+  Nothing -> (0,0)
+
+grat1 :: Point
+grat1 = case positionToPoint <$> gpWGS84 "50 42.0N 1 30.0W" of
+  Just p -> p
+  Nothing -> (0,0)
+
+grat2 :: Point
+grat2 = case positionToPoint <$> gpWGS84 "50 43.0N 1 30.0W" of
+  Just p -> p
+  Nothing -> (0,0)
+
+-- basic 
+plotPoint :: Color -> Point -> Picture
+plotPoint c (x,y) = translate x y $ color c $ circleSolid 2
+
+
 
 -- io, io it's off to work we go...
 main :: IO ()
 main = do
-  ssz <- getScreenSize
-  putStrLn $ show ssz
+  --ssz <- getScreenSize
+  putStr "loading data file..."
   events <- eventsFromFile "/Users/seb/data/BlueBox/030719.tsv"
-  putStrLn $ show (nevents events)
-  let ptsa = mapAssocs positionToPoint (justAssocs position events) 
-  --let xy = mapPair ((/ 2.0) . fromIntegral) ssz
-  -- paint drawing in full screen with top right corner xy 
-  display FullScreen background (plotPoints ptsa)
+  putStrLn "done"
+  
+  let ptsa = mapAssocs positionToPoint (justAssocs position events)
+      (a, b) = snd $ ptsa !! 0
+      vp = viewPortInit {viewPortTranslate = (-a, -b)}
+
+  display FullScreen background $ applyViewPortToPicture vp $
+    pictures [ plotUTMgrid
+             , plotPoints ptsa
+             , pictures $ plotEvents (frames events)
+             , plotPoint green harbourWestEntrance
+             , plotPoint red harbourEast
+             , plotPoint magenta grat1
+             , plotPoint magenta grat2
+             ]
   
 
