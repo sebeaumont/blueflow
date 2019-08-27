@@ -1,12 +1,12 @@
--- random data is very useful 
 module Deepblue.Data.Geodetics ( WGS84Position
                                , gpWGS84
                                , posToLatLong
+                               , distance
                                , module Geodetics.Geodetic
                                ) where
 
 import Geodetics.Geodetic
-import Numeric.Units.Dimensional.Prelude (degree, (/~))
+import Numeric.Units.Dimensional.Prelude (degree, (/~), meter)
 
 -- | Latitide and longtitude w.r.t. WSG84 elipsoid conventionally used
 -- on (electronic) charts and GPS systems
@@ -22,6 +22,11 @@ gpWGS84 = readGroundPosition WGS84
 posToLatLong :: WGS84Position -> (Double, Double)
 posToLatLong p = (latitude p /~ degree, longitude p /~ degree)
 
+distance :: WGS84Position -> WGS84Position -> Double
+distance p1 p2 = case groundDistance p1 p2 of
+  Nothing -> 0
+  Just (m, _, _) -> if (isNaN d) then 0.0 else d where
+    d = m /~ meter
   
 {-
 -- | mapping a fn over a (homogneous) tuple (usually a cartesian point in some length unit)

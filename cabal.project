@@ -1,2 +1,2 @@
-packages: . ./geodetics ./hnetcdf
+packages: . ./geodetics ./hnetcdf ../grenade
 

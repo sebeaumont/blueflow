@@ -1,5 +1,8 @@
 -- -*- dante-target: "exe:deepblue" -*-
+{-# LANGUAGE DeriveDataTypeable #-}
 module Main where
+
+import System.Console.CmdArgs
 
 import Graphics.Gloss
 --import Graphics.Gloss.Interface.Environment
@@ -90,7 +93,8 @@ plotEvents [] = []
 plotEvents (e:es) =
   let ma = norm $ maximumAccel e
   in
-    if ma > 6
+    -- make this a run time param
+    if ma > 5 -- XXX
     then plotEvent e : plotEvents es
     else plotEvents es
 
@@ -102,13 +106,14 @@ formatList (x:xs) = printf " %.2f" x ++ formatList xs
 plotEvent :: LogEventFrame -> Picture
 plotEvent e =
   let ma = maximumAccel e
-      a = toFloat $ (norm ma) / 15
+      a = toFloat $ (norm ma) / 15 -- XXX based on max norm
       (x,y) = positionToPoint $ fromJust $ position e
       c = makeColor a 0.0 0.0 a
       t = (show $ fromJust $ timestamp e) ++ (formatList $ asList ma)
-  in pictures [ translate x y $ color c $ circleSolid (4 * a)
-              , translate x y $ color black $ scale 0.02 0.02 $ text t
-              ]
+  in pictures
+     [ translate x y $ color c $ circleSolid (4 * a) -- sqrt a would give prop area 
+     , translate x y $ color black $ scale 0.02 0.02 $ text t
+     ]
   
 
 {- hack alert... -}
@@ -135,7 +140,7 @@ harbourWestEntrance  = case positionToPoint <$> gpWGS84 "50 42.41N 1 30.07W" of
 
 
 harbourEast :: Point
-harbourEast = case positionToPoint <$> gpWGS84 "50 42.61N 1 29.5W" of
+harbourEast = case positionToPoint <$> gpWGS84 "50 42.61N 1 29.96W" of
   Just p -> p
   Nothing -> (0,0)
 
@@ -154,13 +159,21 @@ plotPoint :: Color -> Point -> Picture
 plotPoint c (x,y) = translate x y $ color c $ circleSolid 2
 
 
+-- command line
+data Deepblue = Deepblue {file :: FilePath} deriving (Show, Data, Typeable)
+
+arguments :: Deepblue
+arguments = Deepblue {file = def &= help "data file for events"}
 
 -- io, io it's off to work we go...
 main :: IO ()
 main = do
   --ssz <- getScreenSize
-  putStr "loading data file..."
-  events <- eventsFromFile "/Users/seb/data/BlueBox/030719.tsv"
+  -- TODO command line processing...
+  options <- cmdArgs arguments
+  putStr $ "loading data file " ++ (file options) ++ "..."
+  -- XXX file param at command line
+  events <- eventsFromFile (file options)
   putStrLn "done"
   
   let ptsa = mapAssocs positionToPoint (justAssocs position events)

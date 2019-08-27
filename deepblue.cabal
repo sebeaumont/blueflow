@@ -53,6 +53,7 @@ executable deepblue
   -- other-modules:    
   -- other-extensions:    
   build-depends:       base
+                     , cmdargs
                      , gloss
                      , deepblue
                      , hmatrix
@@ -93,4 +94,18 @@ executable netcdf
   hs-source-dirs:      tst
   default-language:    Haskell2010
   ghc-options: -O3 -Wall -threaded
-  
+
+-- event training
+   
+executable model
+  main-is:             Model.hs
+  -- other-modules:
+  -- other-extensions:
+  build-depends:       base
+                     , deepblue
+                     , hmatrix
+                     , grenade
+
+  hs-source-dirs:      utl
+  default-language:    Haskell2010
+  ghc-options: -O3 -Wall -threaded

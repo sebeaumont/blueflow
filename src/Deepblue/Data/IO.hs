@@ -3,11 +3,13 @@ module Deepblue.Data.IO ( Accel3D
                         -- aggregate map
                         , EventFrames
                         , frames
+                        , velocities
                         -- events
                         , LogEventFrame
                         , timestamp
                         , position
                         , maximumAccel
+                        , velocity
                         -- utils
                         , eventsFromFile
                         , readEvents
@@ -53,33 +55,6 @@ position = position_
 maximumAccel :: LogEventFrame -> Accel3D
 maximumAccel = maxAccel_
 
-
--- Output formatter
-class Formout a where
-  format :: a -> String
-
-instance Formout LogEventFrame where
-  format f = intercalate "\t" [format ts, format pos, format ma]
-    where ts = timestamp f
-          pos = position f
-          ma = maximumAccel f
-
-instance Formout (Maybe UTCTime) where
-  format t = case t of
-    Nothing -> ""
-    Just u -> format u
-
-instance Formout (Maybe WGS84Position) where
-  format p = case p of
-    Nothing -> ""
-    Just w -> printf "%.6f %.6f" lat long where
-      (lat,long) = posToLatLong w
-
-instance Formout Accel3D where
-  format a = intercalate "\t" $ map show (asList a)
-
-instance Formout UTCTime where
-  format = formatTime defaultTimeLocale (iso8601DateFormat $ Just "%H:%M:%SZ")
 
 
 -- Some parsers for the raw log data
@@ -138,6 +113,22 @@ type EventFrames =  Map.IntMap LogEventFrame
 frames :: EventFrames -> [LogEventFrame]
 frames = Map.elems
 
+velocities :: EventFrames -> [Double]
+velocities e = let xs = frames e in zipWith velocity xs (tail xs)
+
+
+velocity :: LogEventFrame -> LogEventFrame ->  Double
+velocity e1 e2 =
+  let x = nominalDiffTimeToSeconds <$> (diffUTCTime <$> (timestamp e2) <*> (timestamp e1))
+      y = distance <$> (position e1) <*> (position e2)
+  in case (x, y) of
+    (Nothing, Nothing) -> 0
+    (Just _, Nothing)  -> 0
+    (Nothing, Just _) -> 0
+    (Just t, Just s) -> s `safeDiv` (realToFrac t) where
+      safeDiv _ 0 = 0
+      safeDiv a b = a / b
+
 
 -- | map over events frame skipping missing values with a field accessor
 {- INLINE -}
@@ -175,3 +166,33 @@ storeEvents n m h = do
       let evf = parseEvent n line
       -- do something with event frame...
       storeEvents (n+1) (Map.insert n evf m) h
+
+-- 
+-- Output (tsv) formatter for event frames
+--
+
+class Formout a where
+  format :: a -> String
+
+instance Formout LogEventFrame where
+  format f = intercalate "\t" [format ts, format pos, format ma, printf "%.6f" (norm ma)]
+    where ts = timestamp f
+          pos = position f
+          ma = maximumAccel f
+
+instance Formout (Maybe UTCTime) where
+  format t = case t of
+    Nothing -> ""
+    Just u -> format u
+
+instance Formout (Maybe WGS84Position) where
+  format p = case p of
+    Nothing -> ""
+    Just w -> printf "%.6f %.6f" lat long where
+      (lat,long) = posToLatLong w
+
+instance Formout Accel3D where
+  format a = intercalate "\t" $ map (printf "%.6f") (asList a)
+
+instance Formout UTCTime where
+  format = formatTime defaultTimeLocale (iso8601DateFormat $ Just "%H:%M:%SZ")
