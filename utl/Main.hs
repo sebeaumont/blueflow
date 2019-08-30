@@ -3,6 +3,8 @@ module Main where
 
 import Control.Monad
 import Deepblue.Data.IO
+import Deepblue.Data.Display
+
 --import Text.Printf
 
 main :: IO ()

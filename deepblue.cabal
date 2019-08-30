@@ -24,6 +24,10 @@ library
                            , Deepblue.Data.Geodetics.UTMZone
                            , Deepblue.Data.Geodetics.UTMGrid
                            , Deepblue.Data.Acceleration
+                           , Deepblue.Data.Events
+                           , Deepblue.Data.Marks
+                           , Deepblue.Data.Time
+                           , Deepblue.Data.Display
                            , Deepblue.Data.Random
                            , Deepblue.Data.IO
 

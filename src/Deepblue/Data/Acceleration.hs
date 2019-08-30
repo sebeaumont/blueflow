@@ -8,7 +8,7 @@ module Deepblue.Data.Acceleration
   , g
   ) where
 
-  
+
 import Numeric.Units.Dimensional.Prelude
 import qualified Prelude as P
 
@@ -42,8 +42,7 @@ data Accel3D = Accel3D { x :: !(Acceleration Double)
 -- | Parse [x,y,z] vector to Accel3D normalized for earth gravity
 {- INLINE -}
 toAccel3D :: [Double] -> Acceleration Double -> Accel3D
-toAccel3D v g' = let (a:b:c:_) = v *~~ mps2
-                 in
+toAccel3D v g' = let (a:b:c:_) = v *~~ mps2 in
                    Accel3D a b (c + g')
   
 {- INLINE -}
@@ -64,7 +63,7 @@ norm = P.sqrt . normSq
 compareAccel3D :: Accel3D -> Accel3D -> Ordering
 compareAccel3D a b = compare (normSq a) (normSq b)
 
-  
+
 -- | Instances for comparison
 
 instance Eq Accel3D where

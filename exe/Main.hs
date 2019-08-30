@@ -28,6 +28,7 @@ toFloat = realToFrac
 line1 :: Point -> Point -> Path
 line1 a b = [a, b]
 
+{-
 -- | Evenly spaced grid given bottom left and top right points and a point representing
 -- the grid spacing int the x and y direction
 grid :: Point -> Point -> Point -> [Path]
@@ -53,21 +54,6 @@ gridlines c (x,y) sz = color c $ pictures $ map line (grid (-x,-y) (x,y) sz)
 origin :: Color -> Picture
 origin c = color c $ circle 5
 
--- color for axes
-darkGrey :: Color
-darkGrey = makeColor 1.0 1.0 1.0 1.0
-
--- color for major gridlines
-lightGrey :: Color
-lightGrey = makeColor 0.5 0.5 0.5 0.5
-
--- color for minor gridlines
-feintGrey :: Color
-feintGrey = makeColor 0.1 0.1 0.1 0.2
-
-background :: Color
-background = white
-
 -- arbitrary/test paths to see how this looks
 quadratic :: Float -> Float -> Float -> Path
 quadratic a b c =
@@ -82,6 +68,22 @@ isofn = [(x, x) | x <- [0.0,0.1..500.0]]
 -- initial drawing
 drawing :: Point -> Picture
 drawing xy = gridlines feintGrey xy (10,10) <> gridlines lightGrey xy (100,100) <> origin black
+-}
+
+-- color for axes
+darkGrey :: Color
+darkGrey = makeColor 1.0 1.0 1.0 1.0
+
+-- color for major gridlines
+lightGrey :: Color
+lightGrey = makeColor 0.5 0.5 0.5 0.5
+
+-- color for minor gridlines
+feintGrey :: Color
+feintGrey = makeColor 0.1 0.1 0.1 0.2
+
+background :: Color
+background = white
 
 -- points from events file
 plotPoints :: [(Int, (Float, Float))] -> Picture
@@ -160,10 +162,14 @@ plotPoint c (x,y) = translate x y $ color c $ circleSolid 2
 
 
 -- command line
-data Deepblue = Deepblue {file :: FilePath} deriving (Show, Data, Typeable)
+data Deepblue = Deepblue { eventfile :: FilePath
+                         , markfile :: FilePath
+                         } deriving (Show, Data, Typeable)
 
 arguments :: Deepblue
-arguments = Deepblue {file = def &= help "data file for events"}
+arguments = Deepblue { eventfile = def &= help "data file for events"
+                     , markfile = def &= help "file of navigation marks"
+                     }
 
 -- io, io it's off to work we go...
 main :: IO ()
@@ -171,9 +177,10 @@ main = do
   --ssz <- getScreenSize
   -- TODO command line processing...
   options <- cmdArgs arguments
-  putStr $ "loading data file " ++ (file options) ++ "..."
+  putStr $ "loading tracks " ++ (eventfile options) ++ "..."
+  putStr $ "loading marks " ++ (eventfile options) ++ "..."
   -- XXX file param at command line
-  events <- eventsFromFile (file options)
+  events <- eventsFromFile (eventfile options)
   putStrLn "done"
   
   let ptsa = mapAssocs positionToPoint (justAssocs position events)

@@ -1,12 +1,15 @@
 module Deepblue.Data.Geodetics ( WGS84Position
                                , gpWGS84
                                , posToLatLong
+                               , parseLatLong
                                , distance
                                , module Geodetics.Geodetic
                                ) where
 
+
 import Geodetics.Geodetic
 import Numeric.Units.Dimensional.Prelude (degree, (/~), meter)
+import qualified Data.Text as T
 
 -- | Latitide and longtitude w.r.t. WSG84 elipsoid conventionally used
 -- on (electronic) charts and GPS systems
@@ -27,11 +30,11 @@ distance p1 p2 = case groundDistance p1 p2 of
   Nothing -> 0
   Just (m, _, _) -> if (isNaN d) then 0.0 else d where
     d = m /~ meter
-  
-{-
--- | mapping a fn over a (homogneous) tuple (usually a cartesian point in some length unit)
-mapPoint :: (a -> b) -> (a, a) -> (b, b)
-mapPoint f (x, y) = (f x, f y)
--}
+
+-- | Parse Text to GPSPosition
+{- INLINE -}
+parseLatLong :: T.Text -> Maybe WGS84Position
+parseLatLong  = gpWGS84 . T.unpack
+
 
 
