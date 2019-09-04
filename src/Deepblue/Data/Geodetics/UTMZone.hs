@@ -7,10 +7,6 @@ import Geodetics.TransverseMercator
 
 import Numeric.Units.Dimensional.Prelude (Length, degree, meter, one, (*~), (/~), kilo)
 
--- | Grid meters to dimensionless graphics points 
-
-gridToPoint :: (Length Double, Length Double) -> (Float, Float)
-gridToPoint (e, n) = (realToFrac $ e /~ meter, realToFrac $ n /~ meter)
 
 -- UTM zones applicable to UK -- todo all of the UTM zones
 
@@ -78,15 +74,6 @@ utmZoneCoords z p = (\x -> (eastings x, northings x)) (toGrid z $ p)
 utmZoneCoords :: GridTM WGS84 -> String ->  Maybe (Length Double, Length Double)
 utmZoneCoords z p = (\x -> (eastings x, northings x)) <$> toGrid z <$> gpWGS84 p
 -}
-
--- | take a WGS84Position and transform to a simple 2D point for
--- plotting.  Here lookup the UTM zone for the earth position
--- and apply the appropriate transformation to the transverse Mercator
--- grid.
-
-positionToPoint :: WGS84Position -> (Float, Float)
-positionToPoint p = gridToPoint $ utmZoneCoords (positionZone p) p
-
 
 -- | TODO: This should lookup the appropriate Mercator grid for the position
 positionZone :: WGS84Position -> GridTM WGS84

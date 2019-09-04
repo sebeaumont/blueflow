@@ -1,17 +1,15 @@
 module Deepblue.Data.Geodetics.UTMGrid
-  ( westEdgePoints
-  , westEdgePositions
-  , eastEdgePoints
-  , northEdgePoints
-  , southEdgePoints
+  ( westEdgePositions
+  , eastEdgePositions
+  , northEdgePositions
+  , southEdgePositions
   , gridToPoint
   ) where
 
 
-import Numeric.Units.Dimensional.Prelude (Angle, degree, meter, (*~), nFromTo)
+import Numeric.Units.Dimensional.Prelude (Length, Angle, degree, meter, (*~), (/~), nFromTo)
 
 import Deepblue.Data.Geodetics
-import Deepblue.Data.Geodetics.UTMZone
   
 
 -- Define a grid of lat and long at 1 minute intervals to cover the UTM zones
@@ -34,6 +32,11 @@ latNmins = (84 + 80) * 60 - 2
 longNmins :: Int
 longNmins = 360 * 60 - 2
 -}
+
+-- | Grid meters to dimensionless graphics points 
+
+gridToPoint :: (Length Double, Length Double) -> (Float, Float)
+gridToPoint (e, n) = (realToFrac $ e /~ meter, realToFrac $ n /~ meter)
 
 
 -- Interplotate all the minutes of lat and long
@@ -102,18 +105,4 @@ southEdgePositions = [Geodetic { latitude = minLat
                               }
                       | long <- longitudesInMinutes]
 
-
--- convert to points in relevant UTM Zones
-
-westEdgePoints :: [(Float, Float)]
-westEdgePoints = map positionToPoint westEdgePositions
-
-eastEdgePoints :: [(Float, Float)]
-eastEdgePoints = map positionToPoint eastEdgePositions
-
-northEdgePoints :: [(Float, Float)]
-northEdgePoints = map positionToPoint northEdgePositions
-
-southEdgePoints :: [(Float, Float)]
-southEdgePoints = map positionToPoint southEdgePositions
 

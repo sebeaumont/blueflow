@@ -1,7 +1,6 @@
 module Main where
 
 import Grenade
-import Deepblue.Data.IO
 
 
 main :: IO ()

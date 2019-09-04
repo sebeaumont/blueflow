@@ -11,6 +11,7 @@ import Geodetics.Geodetic
 import Numeric.Units.Dimensional.Prelude (degree, (/~), meter)
 import qualified Data.Text as T
 
+
 -- | Latitide and longtitude w.r.t. WSG84 elipsoid conventionally used
 -- on (electronic) charts and GPS systems
 
