@@ -4,7 +4,7 @@ module Deepblue.Graphics.Chart ( plotMarks
                                , plotTrack
                                , plotUTMGrid
                                , background
-                               , positionToPoint -- temporary export while we refactor
+                               , positionToPoint
                                , module Graphics.Gloss
                                ) where
 
@@ -29,7 +29,6 @@ import Text.Printf
 toFloat :: Double -> Float
 toFloat = realToFrac
 
-
 background :: Color
 background = white
 
@@ -38,24 +37,21 @@ background = white
 line1 :: Point -> Point -> Path
 line1 a b = [a, b]
 
--- points from events file
-plotTrack :: [(Int, (Float, Float))] -> Picture
-plotTrack passoc = color blue $ line $ [p | (_, p) <- passoc]
+-- | Plot a track from points
+plotTrack :: [Point] -> Picture
+plotTrack pts = color blue $ line pts 
 
-
-plotEvents :: [LogEventFrame] -> [Picture]
-plotEvents [] = []
-plotEvents (e:es) =
+-- | Plot filtered events
+plotEvents :: [LogEventFrame] -> Double -> [Picture]
+plotEvents [] _ = []
+plotEvents (e:es) nm =
   let ma = norm $ maximumAccel e
   in
     -- make this a run time param
-    if ma > 5 -- XXX
-    then plotEvent e : plotEvents es
-    else plotEvents es
+    if ma > nm
+    then plotEvent e : plotEvents es nm
+    else plotEvents es nm
 
-formatList :: [Double] -> String
-formatList [] = ""
-formatList (x:xs) = printf " %.2f" x ++ formatList xs
 
 {- INLINE -}
 plotEvent :: LogEventFrame -> Picture
@@ -69,7 +65,13 @@ plotEvent e =
      [ translate x y $ color c $ circleSolid (4 * a) -- sqrt a would give prop area 
      , translate x y $ color black $ scale 0.02 0.02 $ text t
      ]
-  
+
+
+{- INLINE -}
+formatList :: [Double] -> String
+formatList [] = ""
+formatList (x:xs) = printf " %.2f" x ++ formatList xs
+
 
 {- hack alert... -}
 

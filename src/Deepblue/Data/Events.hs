@@ -16,8 +16,9 @@ module Deepblue.Data.Events (
   --, readEvents
   --, parseEvent
   --, values
-  , justAssocs
-  , mapAssocs
+  --, justAssocs
+  --, mapAssocs
+  , trackPositions
   ) where
 
 import System.IO
@@ -96,7 +97,7 @@ frames = Map.elems
 velocities :: EventFrames -> [Double]
 velocities e = let xs = frames e in zipWith velocity xs (tail xs)
 
-
+{-
 -- | map over events frame skipping missing values with a field accessor
 {- INLINE -}
 justAssocs :: (LogEventFrame -> Maybe a) -> EventFrames -> [(Int, a)]
@@ -113,6 +114,11 @@ values f m = [(k, f a) | (k, a) <- Map.assocs m]
 {-INLINE -}
 mapAssocs :: (a -> b) -> [(k, a)] -> [(k, b)]
 mapAssocs f l = [(k, f a) | (k, a) <- l]
+-}
+
+{- INLINE -}
+trackPositions :: EventFrames -> [WGS84Position]
+trackPositions evs = [p | Just p <- [position e | e <- Map.elems evs]]
 
 
 -- | Read event data from file into EventFrames Map

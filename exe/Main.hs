@@ -13,11 +13,13 @@ import Deepblue.Graphics.Chart
 -- command line
 data Deepblue = Deepblue { eventfile :: FilePath
                          , markfile :: FilePath
+                         , minAccel :: Double
                          } deriving (Show, Data, Typeable)
 
 arguments :: Deepblue
 arguments = Deepblue { eventfile = def &= help "data file for events"
                      , markfile = def &= help "file of navigation marks"
+                     , minAccel = def &= help "minimum acceleration to highlight"
                      }
 
 -- io, io it's off to work we go...
@@ -34,16 +36,16 @@ main = do
   marks <- marksFromFile (markfile options)
   putStrLn $ show (length marks) ++ " loaded."
 
-  -- TODO restructure...
-  let ptsa = mapAssocs positionToPoint (justAssocs position events)
-      (a, b) = snd $ ptsa !! 0
-      -- goto position
+  -- Get track from events
+  let pts = map positionToPoint (trackPositions events)
+      (a, b) = head pts
+      -- zap view to start of track
       vp = viewPortInit {viewPortTranslate = (-a, -b)}
 
   display FullScreen background $ applyViewPortToPicture vp $
     pictures [ plotUTMGrid
-             , plotTrack ptsa
-             , pictures $ plotEvents (frames events)
+             , plotTrack pts
+             , pictures $ plotEvents (frames events) (minAccel options)
              ]
   
 
