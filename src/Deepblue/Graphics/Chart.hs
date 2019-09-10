@@ -85,19 +85,9 @@ utmGrid = let latLines = zipWith line1 westEdgePoints eastEdgePoints
 plotUTMGrid :: Picture
 plotUTMGrid = color feintGrey $ pictures $ map line utmGrid
 
-
--- should be computed at compile time along with the grid... and any other fixed points
--- chance to try template Haskell...
--- xx find a more efficient way of defining points by lat and log using decimal minutes
-
+{-
 harbourWestEntrance :: Point
 harbourWestEntrance  = case positionToPoint <$> gpWGS84 "50 42.41N 1 30.07W" of
-  Just p -> p
-  Nothing -> (0,0)
-
-
-harbourEast :: Point
-harbourEast = case positionToPoint <$> gpWGS84 "50 42.61N 1 29.96W" of
   Just p -> p
   Nothing -> (0,0)
 
@@ -114,25 +104,22 @@ grat2 = case positionToPoint <$> gpWGS84 "50 43.0N 1 30.0W" of
 -- basic 
 plotPoint :: Color -> Point -> Picture
 plotPoint c (x,y) = translate x y $ color c $ circleSolid 2
-
-
-{-
-             -- TODO move these to plotMarks
-             , plotPoint green harbourWestEntrance
-             , plotPoint red harbourEast
-             -- TODO graticule
-             , plotPoint magenta grat1
-             , plotPoint magenta grat2
 -}
 
-
--- TODO
+-- | Plot marks with positions 
 plotMarks :: [Mark] -> Picture
-plotMarks _ = undefined
+plotMarks ms = pictures [p | Just p <- [plotMark m | m <- ms]]
 
-plotMark :: Mark -> Picture
-plotMark _ = undefined
-
+{- INLINE -}
+plotMark :: Mark -> Maybe Picture
+plotMark mark = case positionToPoint <$> positionOfMark mark of
+  Just (x,y) -> Just $ pictureOf mark x y 
+  Nothing -> Nothing 
+  where
+    pictureOf m x' y' = pictures [ 
+      translate x' y' $ color (colorOfMark m) $ circleSolid 5, 
+      translate x' y' $ color black $ scale 0.2 0.2 $ text (nameOfMark m)]
+      
 
 -- | take a WGS84Position and transform to a simple 2D point for
 -- plotting.  Here lookup the UTM zone for the earth position

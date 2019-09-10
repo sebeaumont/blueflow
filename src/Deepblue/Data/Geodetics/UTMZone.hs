@@ -5,7 +5,7 @@ import Deepblue.Data.Geodetics
 import Geodetics.Grid
 import Geodetics.TransverseMercator
 
-import Numeric.Units.Dimensional.Prelude (Length, degree, meter, one, (*~), (/~), kilo)
+import Numeric.Units.Dimensional.Prelude (Length, degree, meter, one, (*~), kilo)
 
 
 -- UTM zones applicable to UK -- todo all of the UTM zones

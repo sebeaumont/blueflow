@@ -33,9 +33,9 @@ main = do
   putStrLn $ show (length events) ++ " loaded."
   
   putStr $ "loading marks " ++ (markfile options) ++ "..."
-  marks <- marksFromFile (markfile options)
-  putStrLn $ show (length marks) ++ " loaded."
-
+  markMap <- marksFromFile (markfile options)
+  putStrLn $ show (length markMap) ++ " loaded."
+  mapM_ (putStrLn . show) markMap
   -- Get track from events
   let pts = map positionToPoint (trackPositions events)
       (a, b) = head pts
@@ -46,6 +46,7 @@ main = do
     pictures [ plotUTMGrid
              , plotTrack pts
              , pictures $ plotEvents (frames events) (minAccel options)
+             , plotMarks (marks markMap)
              ]
   
 

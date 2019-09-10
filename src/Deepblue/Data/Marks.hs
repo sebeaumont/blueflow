@@ -10,10 +10,12 @@ module Deepblue.Data.Marks ( Mark
                            , nameOfMark
                            , descriptionOfMark
                            , MarkMap
+                           , marks
                            , parseMark
                            ) where
 
 import Deepblue.Data.Geodetics
+import Deepblue.Graphics.Colors
 
 import System.IO
 --import Control.Monad
@@ -26,7 +28,7 @@ data MarkType = NCard | SCard | WCard | ECard | SHM | PHM | CWM | RM deriving (S
 data MarkColor = Yellow | Red | Green deriving (Show, Read)
 data MarkShape = Can | Cone | Sphere | Pillar | Cylinder deriving (Show, Read) 
 
-data Mark = Mark { markName_ :: T.Text
+data Mark = Mark { markName_ :: String
                  , markDescription_ :: T.Text
                  , markType_ :: MarkType
                  , markPosition_ :: Maybe WGS84Position
@@ -36,7 +38,7 @@ data Mark = Mark { markName_ :: T.Text
                  } deriving (Show)
 
 {- INLINE -}            
-nameOfMark :: Mark -> T.Text
+nameOfMark :: Mark -> String
 nameOfMark = markName_
 
 {- INLINE -}
@@ -52,8 +54,11 @@ typeOfMark :: Mark -> MarkType
 typeOfMark = markType_
 
 {- INLINE -}
-colorOfMark :: Mark -> MarkColor
-colorOfMark = markColor_
+colorOfMark :: Mark -> Color
+colorOfMark m = case markColor_ m of
+  Yellow -> yellow
+  Green -> green
+  Red -> red
 
 {- INLINE -}
 shapeOfMark :: Mark -> MarkShape
@@ -94,16 +99,15 @@ data Light = Light { color_ :: LightColor
                    , height_ :: Maybe Int
                    } deriving (Show, Read)
 
--- | Parse standard light syntax
+-- | TODO Parse standard light syntax
 -- 
 parseLight :: T.Text -> Maybe Light
 parseLight _ = Nothing
 
-
 -- | Parse a mark line from file to Mark record
 parseMark :: T.Text -> Mark
 parseMark t = let fields = T.split (=='\t') t in
-  Mark { markName_ = fields !! 0
+  Mark { markName_ = T.unpack $ fields !! 0
        , markDescription_ = fields !! 1
        , markType_ = read $ T.unpack $ fields !! 2
        , markPosition_ = parseLatLong $ fields !! 3
@@ -113,11 +117,12 @@ parseMark t = let fields = T.split (=='\t') t in
        }
   
 -- | Define aggregate data structure for Events
-
 type MarkMap =  Map.IntMap Mark
 
--- | Read event data from file into EventFrames Map
+marks :: MarkMap -> [Mark]
+marks = Map.elems
 
+-- | Read event data from file into EventFrames Map
 marksFromFile :: FilePath -> IO MarkMap
 marksFromFile f =
   -- skip row 0 as header
