@@ -25,8 +25,8 @@ import qualified Data.Text.IO as TIO
 import qualified Data.Text as T
 
 data MarkType = NCard | SCard | WCard | ECard | SHM | PHM | CWM | RM deriving (Show, Read)
-data MarkColor = Yellow | Red | Green deriving (Show, Read)
-data MarkShape = Can | Cone | Sphere | Pillar | Cylinder deriving (Show, Read) 
+data MarkColor = Yellow | Red | Green | BYB | YBY | BBY | YYB deriving (Show, Read)
+data MarkShape = Can | Cone | Sphere | Pillar | Cylinder | Post deriving (Show, Read) 
 
 data Mark = Mark { markName_ :: String
                  , markDescription_ :: T.Text
@@ -59,10 +59,16 @@ colorOfMark m = case markColor_ m of
   Yellow -> yellow
   Green -> green
   Red -> red
+  _ -> black
 
 {- INLINE -}
 shapeOfMark :: Mark -> MarkShape
 shapeOfMark = markShape_
+
+{- TODO
+instance Show Mark where
+  show m = 
+-}
 
 ------------
 -- Lights --
