@@ -10,7 +10,6 @@ module Deepblue.Graphics.Chart ( plotMarks
 
 import Graphics.Gloss
 
-import Deepblue.Data.Geodetics
 import Deepblue.Data.Geodetics.UTMGrid
 import Deepblue.Data.Geodetics.UTMZone
 import Deepblue.Data.Acceleration
@@ -121,13 +120,6 @@ plotMark mark = case positionToPoint <$> positionOfMark mark of
       translate x' y' $ color black $ scale 0.2 0.2 $ text (nameOfMark m)]
       
 
--- | take a WGS84Position and transform to a simple 2D point for
--- plotting.  Here lookup the UTM zone for the earth position
--- and apply the appropriate transformation to the transverse Mercator
--- grid.
-
-positionToPoint :: WGS84Position -> (Float, Float)
-positionToPoint p = gridToPoint $ utmZoneCoords (positionZone p) p
 
 -- convert to points in relevant UTM Zones
 

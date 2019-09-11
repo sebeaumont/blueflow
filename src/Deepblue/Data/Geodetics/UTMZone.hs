@@ -5,12 +5,44 @@ import Deepblue.Data.Geodetics
 import Geodetics.Grid
 import Geodetics.TransverseMercator
 
-import Numeric.Units.Dimensional.Prelude (Length, degree, meter, one, (*~), kilo)
+import Numeric.Units.Dimensional.Prelude (Length, degree, meter, one, (*~), kilo, _0, (/~))
+
+-- UTM zones in WGS84 ellipsoid
+
+-- | Grid meters to dimensionless graphics points 
+
+gridToPoint :: (Length Double, Length Double) -> (Float, Float)
+gridToPoint (e, n) = (realToFrac $ e /~ meter, realToFrac $ n /~ meter)
+
+-- | Dimensionless chart point to transverse mercator GridPoint
+pointToGrid :: (Float, Float) -> GridTM WGS84 -> GridPoint (GridTM WGS84)
+pointToGrid (x,y) zone = GridPoint {eastings = e,  northings = n, altGP = _0, gridBasis = zone} where
+  e = realToFrac x *~ meter
+  n = realToFrac y *~ meter
+
+-- | take a WGS84Position and transform to a simple 2D point for
+-- plotting.  Here lookup the UTM zone for the earth position
+-- and apply the appropriate transformation to the transverse Mercator
+-- grid.
+
+positionToPoint :: WGS84Position -> (Float, Float)
+positionToPoint p = gridToPoint $ utmZoneCoords (positionZone p) p
+
+-- Take a chart 2d point and tranform to a WGS84Position 
+pointToPosition :: (Float, Float) -> WGS84Position
+pointToPosition p = fromGrid $ pointToGrid p (pointZone p)
 
 
--- UTM zones applicable to UK -- todo all of the UTM zones
+-- | TODO: This should lookup the appropriate UTM Zone for the position
+positionZone :: WGS84Position -> GridTM WGS84
+positionZone _ = utmZone30
 
--- | Universal Transverse Mercator Zone 29
+-- | TODO: This should lookup the appropriate UTM Zone for the 2D chart point
+pointZone :: (Float, Float) -> GridTM WGS84
+pointZone _ = utmZone30
+
+
+  -- | Universal Transverse Mercator Zone 29
 
 utmZone29TrueOrigin :: WGS84Position
 utmZone29TrueOrigin = Geodetic { latitude = 0 *~ degree
@@ -74,10 +106,6 @@ utmZoneCoords z p = (\x -> (eastings x, northings x)) (toGrid z $ p)
 utmZoneCoords :: GridTM WGS84 -> String ->  Maybe (Length Double, Length Double)
 utmZoneCoords z p = (\x -> (eastings x, northings x)) <$> toGrid z <$> gpWGS84 p
 -}
-
--- | TODO: This should lookup the appropriate Mercator grid for the position
-positionZone :: WGS84Position -> GridTM WGS84
-positionZone _ = utmZone30
 
 
 

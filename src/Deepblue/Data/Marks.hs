@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric, OverloadedStrings, OverloadedLabels #-}
+{-# LANGUAGE OverloadedLabels #-}
 
 -- | Aynthing defined by a single point in Geodetic space that cab be drawn on a chart --
 module Deepblue.Data.Marks ( Mark

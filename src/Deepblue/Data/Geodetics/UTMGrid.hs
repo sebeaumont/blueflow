@@ -3,41 +3,11 @@ module Deepblue.Data.Geodetics.UTMGrid
   , eastEdgePositions
   , northEdgePositions
   , southEdgePositions
-  , gridToPoint
   ) where
 
 
-import Numeric.Units.Dimensional.Prelude (Length, Angle, degree, meter, (*~), (/~), nFromTo)
-
+import Numeric.Units.Dimensional.Prelude (Angle, degree, meter, (*~), nFromTo)
 import Deepblue.Data.Geodetics
-  
-
--- Define a grid of lat and long at 1 minute intervals to cover the UTM zones
-{-
-minLat :: Angle Double
-minLat = (-80) *~ degree
-
-maxLat :: Angle Double
-maxLat = 84 *~ degree
-
-minLong :: Angle Double
-minLong = (-180) *~ degree
-
-maxLong :: Angle Double
-maxLong = 180 *~ degree
-
-latNmins :: Int
-latNmins = (84 + 80) * 60 - 2
-
-longNmins :: Int
-longNmins = 360 * 60 - 2
--}
-
--- | Grid meters to dimensionless graphics points 
-
-gridToPoint :: (Length Double, Length Double) -> (Float, Float)
-gridToPoint (e, n) = (realToFrac $ e /~ meter, realToFrac $ n /~ meter)
-
 
 -- Interplotate all the minutes of lat and long
 -- N.B. these are not working out sharply to exact minutes

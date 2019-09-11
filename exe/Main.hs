@@ -35,7 +35,7 @@ main = do
   putStr $ "loading marks " ++ (markfile options) ++ "..."
   markMap <- marksFromFile (markfile options)
   putStrLn $ show (length markMap) ++ " loaded."
-  mapM_ (putStrLn . show) markMap -- print marks
+  mapM_ print markMap -- print marks
   
   -- Get track from events
   let pts = map positionToPoint (trackPositions events)
