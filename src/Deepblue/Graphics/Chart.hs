@@ -52,25 +52,23 @@ plotEvents (e:es) nm =
     else plotEvents es nm
 
 
-{- INLINE -}
+{-# INLINE plotEvent #-}
 plotEvent :: LogEventFrame -> Picture
 plotEvent e =
   let ma = maximumAccel e
-      a = toFloat $ (norm ma) / 15 -- XXX based on max norm
+      a = toFloat $ norm ma / 15 -- XXX based on max norm
       (x,y) = positionToPoint $ fromJust $ position e
       c = makeColor a 0.0 0.0 a
-      t = (show $ fromJust $ timestamp e) ++ (formatList $ asList ma)
+      t = show (fromJust $ timestamp e) ++ formatList (asList ma)
   in pictures
      [ translate x y $ color c $ circleSolid (4 * a) -- sqrt a would give prop area 
      , translate x y $ color black $ scale 0.02 0.02 $ text t
      ]
 
 
-{- INLINE -}
+{-# INLINE formatList #-}
 formatList :: [Double] -> String
-formatList [] = ""
-formatList (x:xs) = printf " %.2f" x ++ formatList xs
-
+formatList = concatMap (printf " %.2f")
 
 {- hack alert... -}
 
