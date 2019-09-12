@@ -19,7 +19,7 @@ type WGS84Position = Geodetic WGS84
 
 -- | Utility to read latitude and longtitude ground position as WGS84 Position
 
-gpWGS84 :: String -> Maybe (WGS84Position)
+gpWGS84 :: String -> Maybe WGS84Position
 gpWGS84 = readGroundPosition WGS84
 
 -- | WGS84Position to lat and long in degrees

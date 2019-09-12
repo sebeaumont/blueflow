@@ -55,7 +55,6 @@ utmZone29FalseOrigin :: GridOffset
 utmZone29FalseOrigin = GridOffset ((-500) *~ kilo meter) (0 *~ kilo meter) (0 *~ meter)
 
 
-
 utmZone29 :: GridTM WGS84
 utmZone29 = mkGridTM utmZone29TrueOrigin utmZone29FalseOrigin (0.9996 *~ one)
 

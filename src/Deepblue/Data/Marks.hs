@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedLabels, InstanceSigs #-}
 
 -- | Aynthing defined by a single point in Geodetic space that cab be drawn on a chart --
 module Deepblue.Data.Marks ( Mark
@@ -18,7 +18,7 @@ import Deepblue.Data.Geodetics
 import Deepblue.Graphics.Colors
 
 import System.IO
---import Control.Monad
+import Text.Printf
 
 import qualified Data.IntMap.Strict as Map
 import qualified Data.Text.IO as TIO
@@ -35,7 +35,7 @@ data Mark = Mark { markName_ :: String
                  , markColor_ :: MarkColor
                  , markShape_ :: MarkShape
                  , markLight_ :: Maybe Light
-                 } deriving (Show)
+                 }
 
 {- INLINE -}            
 nameOfMark :: Mark -> String
@@ -65,10 +65,16 @@ colorOfMark m = case markColor_ m of
 shapeOfMark :: Mark -> MarkShape
 shapeOfMark = markShape_
 
-{- TODO
+
 instance Show Mark where
-  show m = 
--}
+  show :: Mark -> String
+  show m = printf "%s\t%s\t%s\t%s\t%s\t%s" 
+    (nameOfMark m)  
+    (descriptionOfMark m)
+    (show $ typeOfMark m)
+    (show $ positionOfMark m)
+    (show $ markColor_ m)
+    (show $ shapeOfMark m)
 
 ------------
 -- Lights --
@@ -116,13 +122,14 @@ parseMark t = let fields = T.split (=='\t') t in
   Mark { markName_ = T.unpack $ fields !! 0
        , markDescription_ = fields !! 1
        , markType_ = read $ T.unpack $ fields !! 2
-       , markPosition_ = parseLatLong $ fields !! 3
+       , markPosition_ = parseLatLong $ fields !! 3 
        , markColor_ = read $ T.unpack $ fields !! 4
        , markShape_ = read $ T.unpack $ fields !! 5
        , markLight_ = parseLight $ fields !! 6
-       }
+       } 
   
--- | Define aggregate data structure for Events
+  
+-- | Define aggregate data structure for Marks
 type MarkMap =  Map.IntMap Mark
 
 marks :: MarkMap -> [Mark]

@@ -28,12 +28,12 @@ main = do
   -- command line processing...
   options <- cmdArgs arguments
 
-  putStr $ "loading tracks " ++ (eventfile options) ++ "..."
-  events <- eventsFromFile (eventfile options)
+  putStr $ "loading tracks " ++ eventfile options ++ "..."
+  events <- eventsFromFile $ eventfile options
   putStrLn $ show (length events) ++ " loaded."
   
-  putStr $ "loading marks " ++ (markfile options) ++ "..."
-  markMap <- marksFromFile (markfile options)
+  putStr $ "loading marks " ++ markfile options ++ "..."
+  markMap <- marksFromFile $ markfile options
   putStrLn $ show (length markMap) ++ " loaded."
   mapM_ print markMap -- print marks
   
@@ -50,4 +50,3 @@ main = do
              , plotMarks (marks markMap)
              ]
   
-
