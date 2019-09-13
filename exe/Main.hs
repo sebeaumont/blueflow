@@ -4,11 +4,14 @@
 module Main where
 
 import System.Console.CmdArgs
+
 import Graphics.Gloss.Data.ViewPort
+import Graphics.Gloss.Interface.Environment
 
 import Deepblue.Data.Events
 import Deepblue.Data.Marks
 import Deepblue.Graphics.Chart
+import Deepblue.Graphics.Status
 
 -- command line
 data Deepblue = Deepblue { eventfile :: FilePath
@@ -37,6 +40,8 @@ main = do
   putStrLn $ show (length markMap) ++ " loaded."
   mapM_ print markMap -- print marks
   
+  (ht, wi) <- getScreenSize
+  
   -- Get track from events
   let pts = map positionToPoint (trackPositions events)
       (a, b) = head pts
@@ -48,5 +53,6 @@ main = do
              , plotTrack pts
              , pictures $ plotEvents (frames events) (minAccel options)
              , plotMarks (marks markMap)
+             , statusArea (initStatusArea (-fromIntegral ht/2.0, -fromIntegral wi/2)) vp
              ]
-  
+

@@ -30,6 +30,7 @@ library
                            , Deepblue.Data.Display
                            , Deepblue.Graphics.Chart
                            , Deepblue.Graphics.Colors
+                           , Deepblue.Graphics.Status
                            
         build-depends:       base
                            , geodetics
