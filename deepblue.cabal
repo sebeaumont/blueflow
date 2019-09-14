@@ -28,9 +28,12 @@ library
                            , Deepblue.Data.Marks
                            , Deepblue.Data.Time
                            , Deepblue.Data.Display
+                           , Deepblue.Data.Options
                            , Deepblue.Graphics.Chart
                            , Deepblue.Graphics.Colors
                            , Deepblue.Graphics.Status
+                           , Deepblue.Graphics.World
+                           , Deepblue.Graphics.Interact
                            
         build-depends:       base
                            , geodetics
@@ -46,6 +49,7 @@ library
                            , vector
                            , hmatrix
                            , gloss
+                           , cmdargs
         hs-source-dirs:      src
         default-language:    Haskell2010
         ghc-options:         -O3 -Wall

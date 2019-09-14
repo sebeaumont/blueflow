@@ -1,6 +1,7 @@
 module Deepblue.Graphics.Status ( initStatusArea
                                 , setContent
                                 , statusArea
+                                , StatusArea
                                 ) where
 
 
@@ -8,20 +9,23 @@ import Graphics.Gloss
 import Graphics.Gloss.Data.ViewPort
 import Deepblue.Graphics.Colors
 
-
--- experimental: basic thing for starters
+-- experimental: basic message thing for starters
 data StatusArea = StatusArea { 
-    position :: Point,
+    pos_ :: Point,
+    scale_ :: Point,
     content :: String 
     }
 
-initStatusArea :: Point -> StatusArea
-initStatusArea p = StatusArea { position = p, content = "deepblue - Copyright(c) 2019 Simon Beaumont"}
+initStatusArea :: Point -> Point -> StatusArea
+initStatusArea p s = StatusArea { pos_ = p, scale_ = s, content = "deepblue - Copyright(c) 2019 Simon Beaumont"}
 
 setContent :: StatusArea -> String -> StatusArea
 setContent a s = a {content = s}
 
--- TODO need to use this everytime ViewPort is updated or update as Picture rather than screen position
 statusArea :: StatusArea -> ViewPort-> Picture
-statusArea a vp = let (x,y) = invertViewPort vp (position a) in 
-    translate (x+2) (y+2) $ color transBlack $ scale 0.2 0.2 $ text (content a) 
+statusArea a vp = 
+    let (x,y) = invertViewPort vp (pos_ a)
+        s = viewPortScale vp
+        (sx,sy) = scale_ a
+    -- TODO need to scale the offsets  -- hmm still not quite right on extreme zooms! 
+    in translate (x+2*sx) (y+2*sy) $ color transBlack $ scale (sx/s) (sy/s) $ text (content a) 

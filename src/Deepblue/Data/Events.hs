@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric, OverloadedStrings, OverloadedLabels, FlexibleInstances #-}
+{-# LANGUAGE OverloadedLabels, FlexibleInstances #-}
 
 module Deepblue.Data.Events (
   -- aggregate map
@@ -134,8 +134,7 @@ storeEvents n m h = do
   eof <- hIsEOF h
   -- either end of file or recurse
   if eof || T.null line
-    then do
-      return m
+    then return m
     else do 
       let evf = parseEvent n line
       -- do something with event frame...
