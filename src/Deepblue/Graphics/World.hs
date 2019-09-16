@@ -14,12 +14,13 @@ import Deepblue.Data.Marks
 import Deepblue.Data.Options
 
 -- "game" state
-data World = World { status_ :: StatusArea
-                   , events_ :: EventFrames
-                   , evfilter_ :: Double
-                   , track_ :: [Point]
-                   , marks_ :: MarkMap
-                   , vp_ :: ViewPort
+data World = World { status_ :: !StatusArea
+                   , events_ :: !EventFrames
+                   , evfilter_ :: !Double
+                   , track_ :: ![Point]
+                   , marks_ :: !MarkMap
+                   , vp_ :: !ViewPort
+                   , time_ :: !Float
                    }
 
 -- start the world and return the state
@@ -42,17 +43,19 @@ initWorld = do
   let pts = map positionToPoint (trackPositions events)
       (a, b) = head pts
       -- create initial world state
-  pure $ World { status_ = initStatusArea (-fromIntegral ht/2.0, -fromIntegral wi/2) (0.2, 0.2)
+  pure $ World { status_ = initStatusArea (-fromIntegral ht/2.0, -fromIntegral wi/2) (0.125, 0.125)
                , events_ = events
                , evfilter_ = minAccel options
                , track_ = pts
                , marks_ = markMap 
                , vp_ = viewPortInit {viewPortTranslate = (-a, -b)}
+               , time_ = 0
                }
 
 render :: World -> Picture
 render w = -- Get track points from event map
-  applyViewPortToPicture (vp_ w) $ pictures [ plotUTMGrid
+  applyViewPortToPicture (vp_ w) $ pictures
+                 [ plotUTMGrid
                  , plotTrack (track_ w)
                  , pictures $ plotEvents (frames (events_ w)) (evfilter_ w)   
                  , plotMarks $ marks (marks_ w)
@@ -62,7 +65,10 @@ render w = -- Get track points from event map
 
 -- | Step the siumlation by t secs
 step :: Float -> World -> World
-step t w = w
+step t w = 
+    let sa = status_ w 
+        tn = time_ w 
+    in w {status_ = setContent sa (show tn), time_ = tn + t} 
 
 -- | Handle user i/o events
 handle :: Event -> World -> World
@@ -71,4 +77,4 @@ handle e w = w {vp_ = eventHandler e (vp_ w)}
 startWorld :: IO ()
 startWorld = do
   world <- initWorld
-  play FullScreen background 2 world render handle step
+  play FullScreen background 1 world render handle step
