@@ -50,10 +50,6 @@ position = position_
 maximumAccel :: LogEventFrame -> Accel3D
 maximumAccel = maxAccel_
 
-
-instance Show LogEventFrame where
-  show ef = show (datetime_ ef) ++ " --> " ++ show (position_ ef) ++ " " ++ show (maxAccel_ ef)
-
 --------------------------------------------------
 -- Some parsers from Text to log event components
 
@@ -74,7 +70,6 @@ parseEvent _ s =
                   , position_ = latlong
                   , maxAccel_ = toAccel3D accel gravity
                   }
-
 
 -- | Compute speed from frame to frame
 velocity :: LogEventFrame -> LogEventFrame ->  Double
