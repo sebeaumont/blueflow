@@ -28,4 +28,4 @@ statusArea a vp =
         s = viewPortScale vp
         (sx,sy) = scale_ a
     -- TODO need to scale the offsets  -- hmm still not quite right on extreme zooms! 
-    in translate (x+2*sx) (y+2*sy) $ color transBlack $ scale (sx/s) (sy/s) $ text (content a) 
+    in translate (x+2*sx) (y+2*sy) $ color black $ scale (sx/s) (sy/s) $ text (content a) 

@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleInstances #-}
 module Deepblue.Data.Geodetics ( WGS84Position
                                , gpWGS84
                                , posToLatLong
@@ -17,7 +18,6 @@ import qualified Data.Text as T
 type WGS84Position = Geodetic WGS84
 
 -- | Utility to read latitude and longtitude ground position as WGS84 Position
-
 gpWGS84 :: String -> Maybe WGS84Position
 gpWGS84 = readGroundPosition WGS84
 
