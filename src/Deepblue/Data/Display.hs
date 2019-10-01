@@ -14,8 +14,13 @@ import Data.List
 class Display a where
   format :: a -> String
 
+instance Display (Maybe LogEventFrame) where
+  format m = case m of
+    Nothing -> "No event"
+    Just e -> format e
+
 instance Display LogEventFrame where
-  format f = intercalate "\t" [format ts, format pos, format ma, printf "%.6f" (norm ma)]
+  format f = intercalate " " [format ts, format pos, format ma, printf "%.6f" (norm ma)]
     where ts = timestamp f
           pos = position f
           ma = maximumAccel f
@@ -29,13 +34,12 @@ instance Display UTC where
   format = formatUTC
 
 instance Display WGS84Position where
-  format p = printf "%.6f %.6f" lat long where
-      (lat,long) = posToLatLong p
+  format p = printf "%s" (show p)
 
 instance Display (Maybe WGS84Position) where
   format p = case p of
-    Nothing -> ""
+    Nothing -> "No Fix"
     Just w -> format w
 
 instance Display Accel3D where
-  format a = intercalate "\t" $ map (printf "%.6f") (asList a)
+  format a = intercalate " " $ map (printf "%.3f") (asList a)
