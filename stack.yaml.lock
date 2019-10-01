@@ -19,34 +19,6 @@ packages:
     git: https://github.com/sebeaumont/geodetics.git
     commit: 8e7f7b1cc165462f28f9b5c31b85beedb1b99188
 - completed:
-    cabal-file:
-      size: 4036
-      sha256: 88f24de7aab4fcb56a5ebb5b939c47046a593c4eccf6a45a88fcfdf3b6e83093
-    name: hnetcdf
-    version: 0.4.0.0
-    git: https://github.com/sebeaumont/hnetcdf.git
-    pantry-tree:
-      size: 2056
-      sha256: 1e7b7f84167c9c7b072850209757457bdae75665e2194b4d63393254346e05f2
-    commit: 75e15b7f28cfb035817534807215d07b2cd5425e
-  original:
-    git: https://github.com/sebeaumont/hnetcdf.git
-    commit: 75e15b7f28cfb035817534807215d07b2cd5425e
-- completed:
-    cabal-file:
-      size: 7273
-      sha256: d0bcbd1b25673a7ddace866d3bce7bb67613cb390154a44d1d2034f0de375b0f
-    name: grenade
-    version: 0.1.0
-    git: https://github.com/sebeaumont/grenade.git
-    pantry-tree:
-      size: 5394
-      sha256: 916900a8017670e5c422fba8a07ab57e4f9ba9bc131fd655303ecaad481e1061
-    commit: f729b291e40a9044d95d49d31bce3149a5b9d599
-  original:
-    git: https://github.com/sebeaumont/grenade.git
-    commit: f729b291e40a9044d95d49d31bce3149a5b9d599
-- completed:
     hackage: time-1.9.3@sha256:8f1b5448722a12a952248b356c9eb366e351226543d9086a2da71270522d5f45,5679
     pantry-tree:
       size: 6558
@@ -74,9 +46,23 @@ packages:
       sha256: c355f7924ce67e5bf8f20767462af18f09b8c0d1f7161117221cbb94c15deee3
   original:
     hackage: unix-2.7.2.2
+- completed:
+    hackage: gloss-1.13.1.1@sha256:49d2d0c7c4a0a5b55a344a257b225b6b3fdd811eaa9c960387a353e094496333,4065
+    pantry-tree:
+      size: 3807
+      sha256: 34a70cb69083d60c18630b0db819d252568d1a67a4c8b05e14c69ff3e40cfdae
+  original:
+    hackage: gloss-1.13.1.1
+- completed:
+    hackage: gloss-rendering-1.13.1.1@sha256:dc6c2d26ea5e19ee4b24ae17d6f5e45eb77df3c34ad87c732fae7a1cd6e5b246,1650
+    pantry-tree:
+      size: 895
+      sha256: f723afd2ab1a3a7c6e128f657268c35f2bb2084a2789543619aa804fd6bfab74
+  original:
+    hackage: gloss-rendering-1.13.1.1
 snapshots:
 - completed:
-    size: 524104
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/14/5.yaml
-    sha256: 3c146eebc1b383211ea49d5422fb3d63d699da12307b4bc989107300eb579d60
-  original: lts-14.5
+    size: 334850
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2019/9/30.yaml
+    sha256: b43e27043ae66fda85af6ac9e555f43208530a2e6475289e88e74167988eff89
+  original: nightly-2019-09-30

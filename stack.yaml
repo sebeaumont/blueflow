@@ -1,6 +1,4 @@
-
-
-resolver: lts-14.5
+resolver: nightly-2019-09-30
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -21,15 +19,12 @@ packages:
 extra-deps:
   - git: https://github.com/sebeaumont/geodetics.git
     commit: 8e7f7b1cc165462f28f9b5c31b85beedb1b99188
-  - git: https://github.com/sebeaumont/hnetcdf.git
-    commit: 75e15b7f28cfb035817534807215d07b2cd5425e
-  - git: https://github.com/sebeaumont/grenade.git
-    commit: f729b291e40a9044d95d49d31bce3149a5b9d599
-
   - time-1.9.3
   - directory-1.3.4.0
   - process-1.6.5.1
   - unix-2.7.2.2
+  - gloss-1.13.1.1
+  - gloss-rendering-1.13.1.1
   
 # this for netcdf and grenade -- TODO must bump dependencies therein...
 allow-newer: true
@@ -41,7 +36,7 @@ allow-newer: true
 # extra-package-dbs: []
 
 # Control whether we use the GHC we find on the path
-#system-ghc: true
+system-ghc: true
 
 #
 # Require a specific version of stack, using version ranges
