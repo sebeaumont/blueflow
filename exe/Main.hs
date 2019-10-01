@@ -1,5 +1,3 @@
--- -*- dante-target: "exe:deepblue" -*-
-
 module Main where
 
 import Deepblue.Graphics.World
