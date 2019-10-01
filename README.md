@@ -1,7 +1,7 @@
 Deepblue
 --------
 
-A package and programs to char and plot weather, marks, tracks, events
+A package and programs to chart and plot weather, marks, tracks, events
 and other navigational stuff.
 
 I recently hijacked this project to support my BlueBox GPS tracking and
