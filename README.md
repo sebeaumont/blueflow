@@ -28,8 +28,8 @@ hope to contribute back to that great project.
       
       The port to aarch64 using ghc 8.8.1
       was checked in on port/aarch64-minimal branch on 
-      1/10/2019 we are now actively developing fin this platform using
-      ghc as out primary tool :)
+      1/10/2019 we are now actively developing on this platform using
+      ghc as out primary compiler. :)
       
 ## Coming soon
     - Real time GPS track and accelerometer data from
