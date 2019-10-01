@@ -21,11 +21,23 @@ everthing geodetic and we are working on completing universal
 transverse mercator zone defintions for worldwide mapping which we
 hope to contribute back to that great project.
 
-## Coming soon
-    - Real time GPS track and accelerometer data (need to finish
-      the hardware first!) Bluetooth LE based sensor arrays for GPS and 9 axis
-      (accel, mag, gyro) coming real soon.
+## News - Sept/Oct 2019
+    - Ported the display and real time analysis application to Jetson
+      Nano (ARM Cortex + Nvidia GPU + GPIO) on board system and
+      integration (NMEA) bus.
       
+      The port to aarch64 using ghc 8.8.1
+      was checked in on port/aarch64-minimal branch on 
+      1/10/2019 we are now actively developing fin this platform using
+      ghc as out primary tool :)
+      
+## Coming soon
+    - Real time GPS track and accelerometer data from
+      Bluetooth LE based sensor arrays for GPS and 9 axis
+      (accel3d, mag3d, gyro3d) coming very soon.
+      
+    - Bluetooth LE message hub.
+    
     - Analysis of acceleration data etc. using
       [Grenade](https://github.com/HuwCampbell/grenade) RNNs (LSTM)
       can we distinguish types of event using a neural net. Can we
@@ -35,14 +47,9 @@ hope to contribute back to that great project.
     - Weather maps, wind, tide -- we'd love to do this real time as
       we are yacht racers in our real lives. Go figure.
       
-    - Port the display and real time analysis application to Jetson
-      Nano (ARM Cortex + Nvidia GPU) for on board system and
-      integration into NMEA bus. This port to aarch64 using ghc 8.8.1
-      was sucessfully done on the port/aarch64-minimal branch on
-      1/10/2019 we are now actively developing for this platform using
-      ghc as out primary tool :)
+
       
 ## Colophon
-    - Hardware: Arduino, Feather, Jetson nano, x86 laptop.
-    - Software: Haskell, Arduino C++, Python3
+    - Hardware: Arduino, Adafruit Feather, Nvidia Jetson nano.
+    - Software: Haskell (ghc-8.8.1), Arduino C++, Python3
     
