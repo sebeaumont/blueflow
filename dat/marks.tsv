@@ -1,0 +1,43 @@
+Label	Description	Type	Position	Color	Shape	Light
+HE	East Fairway Buoy	PHM	50 52.64N 001 29.88W	Red	Can	Fl.R.2s
+1	Black Rock	SHM	50 42.53N 001 30.43W	Green	Cone	Fl.G.5s
+4	The English Summer Berry Co.	RM	50 42.86N 001 28.42W	Yellow	Sphere	
+1G	SW Shingles	PHM	50 39.29N 001 41.50W	Red	Pillar	Fl.R.2.5s
+1M	Warden	SHM	50 41.48N 001 33.55W	Green	Can	Fl.G.2.5s
+2	Charles Stanley	RM	50 42.86N 001 29.40W	Yellow	Sphere	
+3	Folkboats Forever	RM	50 42.47N 001 30.43W	Yellow	Sphere	
+#	Towers	RM	50 42.63N 001 29.26W	Yellow	Pillar	
+WH	West Harbour Entrance	SHM	50 42.41N 001 30.07W	Green	Cone	Q.G
+5	Caldwells	RM	50 43.15N 001 27.49W	Yellow	Cylinder	
+6	Hamstead Ledge	SHM	50 43.86N 001 26.18W	Green	Cone	Fl(2).G.5s
+7	Alitex	RM	50 42.97N 001 28.16W	Yellow	Can	
+8	Bouldnor	RM	50 42.73N 001 28.69W	Yellow	Cylinder	
+9	Royal Solent YC ODM	RM	50 42.72N 001 29.70W	Yellow	Cylinder	
+1N	NE Shingles	ECard	50 41.96N 001 33.40W	BYB	Pillar	Q(3).W.10s
+A	Hurst	RM	50 42.79N 001 32.53W	Yellow	Sphere	
+B	Pennington	RM	50 43.38N 001 31.54W	Yellow	Cylinder	
+C	Oxey	RM	50 43.83N 001 30.86W	Yellow	Cylinder	
+D	Royal Lymington	RM	50 44.17N 001 30.10W	Yellow	Cylinder	
+E 	Pylewell	RM	50 44.58N 001 29.43W	Yellow	Cylinder	
+F	Berthon	RM	50 44.20N 001 29.22W	Yellow	Sphere	
+G	Tanners	RM	50 44.79N 001 28.47W	Yellow	Cylinder	
+H	Jackson	RM	50 44.30N 001 28.16W	Yellow	Cylinder	
+J	Sowley	RM	50 45.11N 001 27.33W	Yellow	Sphere	
+K	Quod Possumus!	RM	50 44.83N 001 26.09W	Yellow	Sphere	
+R	Durns	RM	50 45.43N 001 25.89W	Yellow	Sphere	
+T	Lymington Bank	PHM	50 43.10N 001 30.85W	Red	Can	Fl(2).R.5s
+V	Victor	RM	50 43.30N 001 31.30W	Yellow	Can	
+X	Solent Bank	PHM	50 44.23N 001 27.37W	Red	Can	Fl(3).R.10s
+0	Sconse	NCard	50 42.52N 001 31.43W	BBY	Pillar	Q.W
+3A	West Lepe	PHM	50 45.23N 001 24.09W	Red	Can	Fl.R.5s
+3D	Salt Mead	SHM	50 44.52N 001 23.04W	Green	Cone	Fl(3).G.10s
+3H	East Lepe	PHM	50 45.93N 001 21.07W	Red	Can	Fl(2).R.5s
+3L	Gurnard Ledge	SHM	50 45.51N 001 20.59W	Green	Cone	Fl(4).G.15s
+JB	Jack in the Basket	PHM	50 44.28N 001 30.57W	Red	Post	Fl.R.2s
+11	Delphie	RM	50 42.48N 001 29.94W	Yellow	Sphere	
+14	Stone Pier	RM	50 42.82N 001 28.05W	Yellow	Sphere	
+15	Hallmark	RM	50 42.63N 001 28.70W	Yellow	Sphere	
+16	St Swithins	RM	50 42.52N 001 28.99W	Yellow	Sphere	
+17	Camel	RM	50 42.57N 001 29.17W	Yellow	Sphere	
+18	Mount	RM	50 42.44N 001 29.43W	Yellow	Sphere	
+19	Dinghy ODM	RM	50 42.44N 001 29.82W	Yellow	Sphere	
