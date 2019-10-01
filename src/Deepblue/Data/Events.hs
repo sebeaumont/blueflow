@@ -33,10 +33,11 @@ import Deepblue.Data.Time
 
 -- | GPS logger data frame
 
-data LogEventFrame = LogEventFrame { datetime_ :: !(Maybe UTC)
-                                   , position_ :: !(Maybe WGS84Position)
-                                   , maxAccel_ :: !Accel3D
-                                   }
+data LogEventFrame = LogEventFrame 
+  { datetime_ :: !(Maybe UTC)
+  , position_ :: !(Maybe WGS84Position)
+  , maxAccel_ :: !Accel3D
+  }
 
 {- INLINE -}
 timestamp :: LogEventFrame -> Maybe UTC
@@ -66,10 +67,11 @@ parseEvent _ s =
       accel = parseVector $ fields !! 2
       gravity = g (latitude <$> latlong)
   in 
-    LogEventFrame { datetime_ = datetime
-                  , position_ = latlong
-                  , maxAccel_ = toAccel3D accel gravity
-                  }
+    LogEventFrame 
+      { datetime_ = datetime
+      , position_ = latlong
+      , maxAccel_ = toAccel3D accel gravity
+      }
 
 -- | Compute speed from frame to frame
 velocity :: LogEventFrame -> LogEventFrame ->  Double
@@ -119,7 +121,7 @@ eventsFromFile :: FilePath -> IO EventFrames
 eventsFromFile f =
   withFile f ReadMode (storeEvents 1 Map.empty)
 
--- helper
+-- helper XXX see storeMArks for proper way to do this -- this loses last frame!
 storeEvents :: Int -> EventFrames -> Handle -> IO EventFrames
 storeEvents n m h = do
   line <- TIO.hGetLine h
