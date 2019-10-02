@@ -7,7 +7,7 @@ module Deepblue.Graphics.Status ( initStatusArea
 
 import Graphics.Gloss
 import Graphics.Gloss.Data.ViewPort
-import Deepblue.Graphics.Colors
+--import Deepblue.Graphics.Colors
 
 -- experimental: basic message thing for starters
 data StatusArea = StatusArea { 
@@ -28,4 +28,4 @@ statusArea a vp =
         s = viewPortScale vp
         (sx,sy) = scale_ a
     -- TODO need to scale the offsets  -- hmm still not quite right on extreme zooms! 
-    in translate (x+2*sx) (y+2*sy) $ color black $ scale (sx/s) (sy/s) $ text (content a) 
+    in translate (x+3*sx) (y+3*sy) $ color black $ scale (sx/s) (sy/s) $ text (content a) 

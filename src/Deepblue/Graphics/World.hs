@@ -1,8 +1,5 @@
 module Deepblue.Graphics.World (startWorld) where
 
-import Control.Monad
-
-
 import Deepblue.Data.Display
 import Deepblue.Data.Events
 import Deepblue.Data.Marks
