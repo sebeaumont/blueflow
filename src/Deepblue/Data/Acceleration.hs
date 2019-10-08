@@ -40,21 +40,21 @@ data Accel3D = Accel3D { x :: !(Acceleration Double)
                        } deriving (Show)
 
 -- | Parse [x,y,z] vector to Accel3D normalized for earth gravity
-{- INLINE -}
+{-# INLINE toAccel3D #-}
 toAccel3D :: [Double] -> Acceleration Double -> Accel3D
 toAccel3D v g' = let (a:b:c:_) = v *~~ mps2 in
                    Accel3D a b (c + g')
   
-{- INLINE -}
+{-# INLINE asList #-}
 asList :: Accel3D -> [Double]
 asList v = [x v, y v, z v] /~~ mps2
 
 
-{- INLINE -}
+{-# INLINE normSq #-}
 normSq :: Accel3D -> Double
 normSq v = P.sum $ P.map (P.**2) (asList v)
 
-{- INLINE -}
+{-# INLINE norm  #-}
 norm :: Accel3D -> Double
 norm = P.sqrt . normSq
 

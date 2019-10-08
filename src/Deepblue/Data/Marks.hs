@@ -12,10 +12,12 @@ module Deepblue.Data.Marks ( Mark
                            , MarkMap
                            , marks
                            , parseMark
+                           , markColorToRGBA
                            ) where
 
 import Deepblue.Data.Geodetics
 import Deepblue.Graphics.Colors
+import Deepblue.Data.Display
 
 import System.IO
 import Text.Printf
@@ -26,6 +28,15 @@ import qualified Data.Text as T
 
 data MarkType = NCard | SCard | WCard | ECard | SHM | PHM | CWM | RM deriving (Show, Read)
 data MarkColor = Yellow | Red | Green | BYB | YBY | BBY | YYB deriving (Show, Read)
+
+markColorToRGBA :: MarkColor -> Color
+markColorToRGBA mc =
+  case mc of
+    Yellow -> yellow
+    Green -> green
+    Red -> red
+    _ -> black
+
 data MarkShape = Can | Cone | Sphere | Pillar | Cylinder | Post deriving (Show, Read) 
 
 data Mark = Mark { markName_ :: String
@@ -54,17 +65,13 @@ typeOfMark :: Mark -> MarkType
 typeOfMark = markType_
 
 {- INLINE -}
-colorOfMark :: Mark -> Color
-colorOfMark m = case markColor_ m of
-  Yellow -> yellow
-  Green -> green
-  Red -> red
-  _ -> black
+colorOfMark :: Mark -> MarkColor
+colorOfMark = markColor_
+
 
 {- INLINE -}
 shapeOfMark :: Mark -> MarkShape
 shapeOfMark = markShape_
-
 
 instance Show Mark where
   show :: Mark -> String
@@ -73,9 +80,20 @@ instance Show Mark where
     (descriptionOfMark m)
     (show $ typeOfMark m)
     (show $ positionOfMark m)
-    (show $ markColor_ m)
+    (show $ colorOfMark m)
     (show $ shapeOfMark m)
 
+instance Display Mark where
+  format m = 
+    printf "%s\t%s\t%s\t%.6f\t%.6f\t%s\t%s" 
+      (nameOfMark m)  
+      (descriptionOfMark m)
+      (show $ typeOfMark m)
+      lat
+      lon
+      (show $ colorOfMark m)
+      (show $ shapeOfMark m)
+    where Just (lat, lon) = posToLatLong <$> positionOfMark m
 ------------
 -- Lights --
 ------------

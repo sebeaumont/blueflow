@@ -19,6 +19,20 @@ packages:
     git: https://github.com/sebeaumont/geodetics.git
     commit: 8e7f7b1cc165462f28f9b5c31b85beedb1b99188
 - completed:
+    cabal-file:
+      size: 3718
+      sha256: e4163cd7c3cd0af59988cdf5b36506ba540dc4659a6e8ac00a630f97677b2a2d
+    name: direct-sqlite
+    version: 2.3.25
+    git: https://github.com/sebeaumont/direct-sqlite.git
+    pantry-tree:
+      size: 1091
+      sha256: b976e842c7d6fb83c5820741253795e671498c4ab5488b9941373e61c731d764
+    commit: 05c224ad2e9e97a0cbb16e92396d5ec322aa9968
+  original:
+    git: https://github.com/sebeaumont/direct-sqlite.git
+    commit: 05c224ad2e9e97a0cbb16e92396d5ec322aa9968
+- completed:
     hackage: time-1.9.3@sha256:8f1b5448722a12a952248b356c9eb366e351226543d9086a2da71270522d5f45,5679
     pantry-tree:
       size: 6558

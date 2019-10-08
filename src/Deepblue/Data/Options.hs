@@ -17,11 +17,16 @@ data Deepblue = Deepblue { eventfile :: FilePath
                          , animationRate :: Float
                          } deriving (Show, Data, Typeable)
 
+{-
+event stream should be interactively added along with their parameters (or in data stream/header)
+marks should be loaded in real time via some geo database query
+-}
 arguments :: Deepblue
 arguments = Deepblue { eventfile = def &= help "data file for events"
                      , markfile = def &= help "file of navigation marks"
+                     -- xxx these  should be a property of the track
                      , minAccel = def &= help "minimum acceleration to highlight"
-                     , animationRate = def &= opt "1.0" &= help "animation rate (x Float) for track"
+                     , animationRate = def &= help "animation rate for track"
                      }
 
 getCommandArgs :: IO Deepblue                     
