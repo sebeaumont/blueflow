@@ -6,7 +6,8 @@ module Deepblue.Database.Schema
     , ex
     ) where
 
-import Control.Monad (when)
+import Control.Monad (unless)
+import Control.Applicative
 import Database.SQLite3
 import qualified Database.SQLite3.Direct as SD
 import qualified Data.Text as T
@@ -23,19 +24,18 @@ data GISError = Extension T.Text
 
 -- | Open Sqlite3 database and initialise SpatiaLite GIS extensions
 -- 
--- TODO initGIS :: T.Text -> IO (Either GISError GIS)
-initGIS :: T.Text -> IO GIS
+initGIS :: T.Text -> IO (Either GISError GIS)
 initGIS uri = do 
   d  <- open uri
   _  <- SD.setLoadExtensionEnabled d True
-  se <- loadSpatialExtension d
+  se <- loadSpatialExtension' d 
   _  <- SD.setLoadExtensionEnabled d False
   ss <- hasSpatialSchema d
-  -- only if needed and possible..
-  when (se && not ss)
-    (ensureSpatialSchema d)
-    
-  return $ GIS d
+  
+  case se of
+    Left (_,m) -> close d >> (return $ Left $ Extension $ utf8toText m)
+    Right _ -> unless ss (ensureSpatialSchema d) >> (return . Right . GIS) d
+      
 
 -- internal init helpers use underlying Database hackery
 
@@ -47,16 +47,17 @@ appendUtf8 t s = SD.Utf8 . E.encodeUtf8 $ T.append t s
 toUtf8 :: T.Text -> SD.Utf8
 toUtf8 = SD.Utf8 . E.encodeUtf8
 
+{-# INLINE utf8toText #-}
 utf8toText :: SD.Utf8 -> T.Text
 utf8toText (SD.Utf8 b) = E.decodeUtf8 b 
 
-{-    
-loadSpatialExtension :: Database -> IO ()
-loadSpatialExtension c = exec c "select load_extension('mod_spatialite')"
+{-}  
+loadSpatialExtension :: Database -> IO (Either (Error, SD.Utf8) ())
+loadSpatialExtension c = SD.exec c "select load_extension('mod_spatialite')"
 -}
 
 -- Try very hard to load extension using low level api
-
+{-}
 loadExtension :: Database -> T.Text -> IO Bool
 loadExtension c l = do
   r <- SD.loadExtension c (toUtf8 l)
@@ -73,15 +74,16 @@ loadExtension c l = do
         Right _ -> return True
     Left e -> loadExtensionError l e
     Right _ -> return True
+-}
 
--- report error
-loadExtensionError :: T.Text -> (SD.Error, SD.Utf8) -> IO Bool
-loadExtensionError l (e, m) =
-  error (show e ++ ": " ++ show m ++ " in loadExtension: " ++ show l) >> return False
-
-
-loadSpatialExtension :: Database -> IO Bool
-loadSpatialExtension c = loadExtension c "mod_spatialite"
+loadExtension' :: Database -> T.Text -> IO (Either (Error, SD.Utf8) ())
+loadExtension' c l = 
+    SD.loadExtension c (toUtf8 l) <|> 
+    SD.loadExtension c (appendUtf8 l ".so") <|> 
+    SD.loadExtension c (appendUtf8 l ".dylib")
+                           
+loadSpatialExtension' :: Database -> IO (Either (Error, SD.Utf8) ())
+loadSpatialExtension' d = loadExtension' d "mod_spatialite"
 
 
 tableExists :: Database -> T.Text -> IO Bool
@@ -89,6 +91,7 @@ tableExists d t = do
     stmt <- prepare d "SELECT count(*) FROM sqlite_master where name=?1 and type='table'"
     _ <- bindText stmt 1 t >> step stmt
     res <- columnInt64 stmt 0
+    finalize stmt
     return $ res > 0
 
 hasSpatialSchema :: Database -> IO Bool
