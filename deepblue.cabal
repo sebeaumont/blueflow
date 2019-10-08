@@ -72,7 +72,9 @@ executable deepblue
   hs-source-dirs:      exe
   default-language:    Haskell2010
   ghc-options: -O3 -Wall -threaded
-
+  extra-libraries: spatialite sqlite3
+  extra-lib-dirs: /usr/local/opt/sqlite3/lib /usr/local/lib
+  
 executable loadgeo
   main-is:             Main.hs
   -- other-modules:    
@@ -84,3 +86,5 @@ executable loadgeo
   hs-source-dirs:      utl
   default-language:    Haskell2010
   ghc-options: -O3 -Wall -threaded
+  extra-libraries: spatialite sqlite3
+  extra-lib-dirs: /usr/local/opt/sqlite3/lib /usr/local/lib
