@@ -21,7 +21,13 @@ everthing geodetic and we are working on completing universal
 transverse mercator zone defintions for worldwide mapping which we
 hope to contribute back to that great project.
 
-## News - Sept/Oct 2019
+## News - Oct 2019
+    - POC: Integrated SpatiaLite into GIS module
+      making this work well and reliably across platforms was a challenge
+      as we need to link against an system installed sqlite library and 
+      cautiously load the mod_spatialite into sqlite. WIP but may be the
+      future for all relevant data managment and spatial reasoning.
+
     - Ported the display and real time analysis application to Jetson
       Nano (ARM Cortex + Nvidia GPU + GPIO) on board system and
       integration (NMEA) bus.
@@ -34,7 +40,7 @@ hope to contribute back to that great project.
 ## Coming soon
     - Real time GPS track and accelerometer data from
       Bluetooth LE based sensor arrays for GPS and 9 axis
-      (accel3d, mag3d, gyro3d) coming very soon.
+      (accel3d, mag3d, gyro3d) aka 13D coming very soon.
       
     - Bluetooth LE message hub.
     
