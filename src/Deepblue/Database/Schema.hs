@@ -39,10 +39,6 @@ initGIS uri = do
 
 -- internal init helpers use underlying Database hackery
 
-{-# INLINE appendUtf8 #-}
-appendUtf8 :: T.Text -> T.Text -> SD.Utf8
-appendUtf8 t s = SD.Utf8 . E.encodeUtf8 $ T.append t s 
-
 {-# INLINE toUtf8 #-}
 toUtf8 :: T.Text -> SD.Utf8
 toUtf8 = SD.Utf8 . E.encodeUtf8
@@ -51,37 +47,31 @@ toUtf8 = SD.Utf8 . E.encodeUtf8
 utf8toText :: SD.Utf8 -> T.Text
 utf8toText (SD.Utf8 b) = E.decodeUtf8 b 
 
+utf8toString :: SD.Utf8 -> String
+utf8toString = T.unpack . utf8toText
+
 {-}  
 loadSpatialExtension :: Database -> IO (Either (Error, SD.Utf8) ())
 loadSpatialExtension c = SD.exec c "select load_extension('mod_spatialite')"
 -}
 
--- Try very hard to load extension using low level api
-{-}
-loadExtension :: Database -> T.Text -> IO Bool
-loadExtension c l = do
-  r <- SD.loadExtension c (toUtf8 l)
-  case r of
-    Left (ErrorError, _) -> do
-      rso <- SD.loadExtension c (appendUtf8 l  ".so")
-      case rso of
-        Left (ErrorError, _) -> do
-          rdl <- SD.loadExtension c (appendUtf8 l ".dylib")
-          case rdl of
-            Left e2 -> loadExtensionError l e2
-            Right _ -> return True
-        Left e1 -> loadExtensionError l e1
-        Right _ -> return True
-    Left e -> loadExtensionError l e
-    Right _ -> return True
--}
+-- XXX don't like failure in libraries... is this the only way to get
+-- Alternative IO to work? Also we should short circuit any known errors
+
+loadExtension :: Database -> T.Text -> IO (Either (Error, SD.Utf8) ())
+loadExtension d l = do
+  res <- SD.loadExtension d (toUtf8 l)
+  case res of
+    Left (_,m) -> (fail $ "loadExtension: " ++ utf8toString m) >> return res
+    Right _ -> return res
+
 
 loadExtension' :: Database -> T.Text -> IO (Either (Error, SD.Utf8) ())
 loadExtension' c l = 
-    SD.loadExtension c (toUtf8 l) <|> 
-    SD.loadExtension c (appendUtf8 l ".so") <|> 
-    SD.loadExtension c (appendUtf8 l ".dylib")
-                           
+    loadExtension c l <|> 
+    loadExtension c (T.append l ".so") <|> 
+    loadExtension c (T.append l ".dylib")
+
 loadSpatialExtension' :: Database -> IO (Either (Error, SD.Utf8) ())
 loadSpatialExtension' d = loadExtension' d "mod_spatialite"
 
