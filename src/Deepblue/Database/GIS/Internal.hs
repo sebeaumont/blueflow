@@ -1,8 +1,8 @@
-{-# LANGUAGE OverloadedStrings #-}
-module Deepblue.Database.Schema
-    ( GIS  
+{-# LANGUAGE OverloadedStrings, GeneralizedNewtypeDeriving #-}
+module Deepblue.Database.GIS.Internal
+    ( GIS() -- TODO: let's have a monad wrapper and runGIS
+    , GISError  
     , initGIS
-    , addPointColToTable
     , ex
     ) where
 
@@ -50,7 +50,12 @@ utf8toText (SD.Utf8 b) = E.decodeUtf8 b
 utf8toString :: SD.Utf8 -> String
 utf8toString = T.unpack . utf8toText
 
-{-}  
+{-}
+TODO sql statement based version of LoadExtension
+so we dont need my custom direct-sqlite loadExtension FFI
+if we can make a MonadPlus instance for GIS or indeed the underlying
+IO then we can do alternaticves and guards whcih would help here and
+be nice for the user of this type...    
 loadSpatialExtension :: Database -> IO (Either (Error, SD.Utf8) ())
 loadSpatialExtension c = SD.exec c "select load_extension('mod_spatialite')"
 -}
@@ -62,7 +67,7 @@ loadExtension :: Database -> T.Text -> IO (Either (Error, SD.Utf8) ())
 loadExtension d l = do
   res <- SD.loadExtension d (toUtf8 l)
   case res of
-    Left (_,m) -> (fail $ "loadExtension: " ++ utf8toString m) >> return res
+    Left (_,m) -> (error $ "loadExtension: " ++ utf8toString m) >> return res
     Right _ -> return res
 
 
@@ -90,12 +95,6 @@ hasSpatialSchema d = tableExists d "spatial_ref_sys"
 ensureSpatialSchema :: Database -> IO ()
 ensureSpatialSchema c = exec c "SELECT InitSpatialMetaData()"
 
-
--- | Add WGS-84 POINT column to a table
-addPointColToTable :: GIS -> T.Text -> T.Text -> IO ()
-addPointColToTable (GIS d) table col = 
-    let q = T.concat ["select AddGeometryColumn('", table, "','", col, "',4326,'POINT','XY')"]
-    in exec d q
 
 -- pro tem for ghci
 ex :: GIS -> T.Text -> IO ()
