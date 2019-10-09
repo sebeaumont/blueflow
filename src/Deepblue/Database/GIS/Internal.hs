@@ -72,7 +72,7 @@ loadExtension :: Database -> T.Text -> IO (Either (Error, SD.Utf8) ())
 loadExtension d l = do
   res <- SD.loadExtension d (toUtf8 l)
   case res of
-    Left (_,m) -> (error $ "loadExtension: " ++ utf8toString m) >> return res
+    Left (_,m) -> (fail $ "loadExtension: " ++ utf8toString m) >> return res
     Right _ -> return res
 
 
