@@ -19,20 +19,6 @@ packages:
     git: https://github.com/sebeaumont/geodetics.git
     commit: 8e7f7b1cc165462f28f9b5c31b85beedb1b99188
 - completed:
-    cabal-file:
-      size: 3718
-      sha256: 34fdbb2ffb165e4a4ff0384f7b89f630bf41f555c1701821049fcc207b76205c
-    name: direct-sqlite
-    version: 2.3.25
-    git: https://github.com/sebeaumont/direct-sqlite.git
-    pantry-tree:
-      size: 1090
-      sha256: 751a38ac7db247d96753d0d43bdef57c38e07795c71414126ccf165acc4fd38d
-    commit: 36f3a7aa87c538a888a22d0077314fa0996ed44d
-  original:
-    git: https://github.com/sebeaumont/direct-sqlite.git
-    commit: 36f3a7aa87c538a888a22d0077314fa0996ed44d
-- completed:
     hackage: time-1.9.3@sha256:8f1b5448722a12a952248b356c9eb366e351226543d9086a2da71270522d5f45,5679
     pantry-tree:
       size: 6558
@@ -76,7 +62,7 @@ packages:
     hackage: gloss-rendering-1.13.1.1
 snapshots:
 - completed:
-    size: 334850
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2019/9/30.yaml
-    sha256: b43e27043ae66fda85af6ac9e555f43208530a2e6475289e88e74167988eff89
-  original: nightly-2019-09-30
+    size: 523700
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/14/7.yaml
+    sha256: 8e3f3c894be74d71fa4bf085e0a8baae7e4d7622d07ea31a52736b80f8b9bb1a
+  original: lts-14.7

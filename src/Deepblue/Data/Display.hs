@@ -6,6 +6,7 @@ module Deepblue.Data.Display ( Display
 import Deepblue.Data.Acceleration
 import Deepblue.Data.Geodetics
 import Deepblue.Data.Events
+--import Deepblue.Data.Marks
 import Deepblue.Data.Time
 
 import Text.Printf
@@ -34,7 +35,7 @@ instance Display UTC where
   format = formatUTC
 
 instance Display WGS84Position where
-  format p = printf "%s" (show p)
+  format p = printf "%f" (show p)
 
 instance Display (Maybe WGS84Position) where
   format p = case p of
@@ -43,3 +44,4 @@ instance Display (Maybe WGS84Position) where
 
 instance Display Accel3D where
   format a = intercalate " " $ map (printf "%.3f") (asList a)
+

@@ -1,8 +1,5 @@
 module Deepblue.Graphics.World (startWorld) where
 
-import Control.Monad
-
-
 import Deepblue.Data.Display
 import Deepblue.Data.Events
 import Deepblue.Data.Marks
@@ -46,11 +43,12 @@ initWorld = do
  -- create initial world state
   options <- getCommandArgs
 
-  putStr $ "loading tracks " ++ eventfile options ++ "..."
+  --putStr $ "loading tracks " ++ eventfile options ++ "..."
+
   events <- eventsFromFile $ eventfile options
-  putStrLn $ show (length events) ++ " loaded."
+  --putStrLn $ show (length events) ++ " loaded."
   
-  putStr $ "loading marks " ++ markfile options ++ "..."
+  --putStr $ "loading marks " ++ markfile options ++ "..."
   markMap <- marksFromFile $ markfile options
   putStrLn $ show (length markMap) ++ " loaded."
   mapM_ print markMap -- print marks to console

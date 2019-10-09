@@ -114,7 +114,7 @@ plotMark mark = case positionToPoint <$> positionOfMark mark of
   Nothing -> Nothing 
   where
     pictureOf m x' y' = pictures [ 
-      translate x' y' $ color (colorOfMark m) $ circleSolid 5, 
+      translate x' y' $ color (markColorToRGBA (colorOfMark m)) $ circleSolid 5, 
       translate x' y' $ color black $ scale 0.2 0.2 $ text (nameOfMark m)]
       
 

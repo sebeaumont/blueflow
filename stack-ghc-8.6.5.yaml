@@ -1,20 +1,30 @@
-resolver: nightly-2019-09-30
+resolver: lts-14.7
 
+# User packages to be built.
+# Various formats can be used as shown in the example below.
+#
+# packages:
+# - some-directory
+# - https://example.com/foo/bar/baz-0.0.2.tar.gz
+#   subdirs:
+#   - auto-update
+#   - wai
 packages:
   - .
 
+# Dependency packages to be pulled from upstream that are not in the resolver.
+# These entries can reference officially published versions as well as
+# forks / in-progress versions pinned to a git hash. For example:
+#
 extra-deps:
   - git: https://github.com/sebeaumont/geodetics.git
     commit: 8e7f7b1cc165462f28f9b5c31b85beedb1b99188
-  - git: https://github.com/sebeaumont/direct-sqlite.git
-    commit: 36f3a7aa87c538a888a22d0077314fa0996ed44d
   - time-1.9.3
   - directory-1.3.4.0
   - process-1.6.5.1
   - unix-2.7.2.2
   - gloss-1.13.1.1
   - gloss-rendering-1.13.1.1
-  
   
 # this for netcdf and grenade -- TODO must bump dependencies therein...
 allow-newer: true
@@ -26,12 +36,7 @@ allow-newer: true
 # extra-package-dbs: []
 
 # Control whether we use the GHC we find on the path
-system-ghc: true
-
-flags:
-  # will also need some extra lib/dirs on some platforms
-  direct-sqlite:
-    systemlib: true
+#system-ghc: true
 
 #
 # Require a specific version of stack, using version ranges

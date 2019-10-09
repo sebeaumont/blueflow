@@ -34,6 +34,9 @@ library
                            , Deepblue.Graphics.Status
                            , Deepblue.Graphics.World
                            , Deepblue.Graphics.Interact
+                           , Deepblue.Database.GIS
+                           , Deepblue.Database.GIS.Schema
+        other-modules:       Deepblue.Database.GIS.Internal
                            
         build-depends:       base
                            , geodetics
@@ -42,18 +45,20 @@ library
                            , text
                            , sort
                            , containers
-                           , hnetcdf
-                           , random
-                           , mtl
-                           , repa
-                           , vector
-                           , hmatrix
+                           , streamly
+                           , direct-sqlite
+                           --, hnetcdf
+                           --, random
+                           --, mtl
+                           --, repa
+                           --, vector
+                           --, hmatrix
                            , gloss
                            , cmdargs
         hs-source-dirs:      src
         default-language:    Haskell2010
         ghc-options:         -O3 -Wall
-
+        
         
 -- main plotter exe                     
                      
@@ -65,56 +70,23 @@ executable deepblue
                      , cmdargs
                      , gloss
                      , deepblue
-                     , hmatrix
 
   hs-source-dirs:      exe
   default-language:    Haskell2010
   ghc-options: -O3 -Wall -threaded
-
+  extra-libraries: sqlite3
+  extra-lib-dirs: /usr/local/opt/sqlite3/lib /usr/local/lib
   
--- 
-   
-executable evdata
+executable loadgeo
   main-is:             Main.hs
   -- other-modules:    
   -- other-extensions:    
   build-depends:       base
+                     , cmdargs
                      , deepblue
-                     
-  hs-source-dirs:      utl
-  default-language:    Haskell2010
-  ghc-options: -O3 -Wall
-
-  
--- netcdf test exe
-          
-executable netcdf
-  main-is:             Main.hs
-  -- other-modules:    
-  -- other-extensions:    
-  build-depends:       base
-                     , deepblue
-                     , hnetcdf
-                     , dimensional
-                     , vector
-                     , repa
-                     , containers
-
-  hs-source-dirs:      tst
-  default-language:    Haskell2010
-  ghc-options: -O3 -Wall -threaded
-
--- event training
-   
-executable model
-  main-is:             Model.hs
-  -- other-modules:
-  -- other-extensions:
-  build-depends:       base
-                     , deepblue
-                     , hmatrix
-                     , grenade
 
   hs-source-dirs:      utl
   default-language:    Haskell2010
   ghc-options: -O3 -Wall -threaded
+  extra-libraries: sqlite3
+  extra-lib-dirs: /usr/local/opt/sqlite3/lib /usr/local/lib
