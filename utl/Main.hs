@@ -5,7 +5,7 @@ import Control.Monad
 --import Deepblue.Data.Events
 import Deepblue.Data.Display
 import Deepblue.Data.Marks
-import Deepblue.Database.Schema
+import Deepblue.Database.GIS
 
 --import Text.Printf
 

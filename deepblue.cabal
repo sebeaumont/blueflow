@@ -34,7 +34,9 @@ library
                            , Deepblue.Graphics.Status
                            , Deepblue.Graphics.World
                            , Deepblue.Graphics.Interact
-                           , Deepblue.Database.Schema
+                           , Deepblue.Database.GIS
+                           , Deepblue.Database.GIS.Schema
+        other-modules:       Deepblue.Database.GIS.Internal
                            
         build-depends:       base
                            , geodetics

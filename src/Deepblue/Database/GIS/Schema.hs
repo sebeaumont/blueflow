@@ -8,6 +8,6 @@ import qualified Data.Text as T
 
 -- | Add WGS-84 POINT column to a table
 addPointColToTable :: GIS -> T.Text -> T.Text -> IO ()
-addPointColToTable (GIS d) table col = 
+addPointColToTable g table col = 
     let q = T.concat ["select AddGeometryColumn('", table, "','", col, "',4326,'POINT','XY')"]
-    in exec d q
+    in execGIS g $ q

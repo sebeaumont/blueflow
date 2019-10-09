@@ -1,8 +1,9 @@
 {-# LANGUAGE OverloadedStrings, GeneralizedNewtypeDeriving #-}
 module Deepblue.Database.GIS.Internal
-    ( GIS() -- TODO: let's have a monad wrapper and runGIS
+    ( GIS
     , GISError  
     , initGIS
+    , execGIS
     , ex
     ) where
 
@@ -15,6 +16,10 @@ import qualified Data.Text.Encoding as E
 
 -- | Type of the Spatial Database
 newtype GIS = GIS Database deriving (Show)
+
+-- pro tem till we do a proper monadic wrapper (see below)
+execGIS :: GIS -> T.Text -> IO ()
+execGIS (GIS d) = exec d
 
 -- | GIS run time errors
 data GISError = Extension T.Text
