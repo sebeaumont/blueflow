@@ -25,6 +25,7 @@ transverse mercator zone defintions for worldwide mapping which we
 hope to contribute back to that great project.
 
 ## News - Oct 2019
+
 - POC: Integrated SpatiaLite into SQLite GIS module using 
 [direct-sqlite](https://github.com/sebeaumont/direct-sqlite)
 Making this work well and reliably across platforms requires some fiddling
@@ -36,7 +37,7 @@ Track this on ```feature/GIS``` branch.
 - Ported the display and real time analysis application to Jetson
 Nano (ARM Cortex + Nvidia GPU + GPIO) on board system and
 integration (NMEA) bus.
-      
+
 The port to aarch64 using ghc 8.8.1
 was merged from ```port/aarch64-minimal``` branch in
 October and we are now actively developing on this platform using
@@ -44,6 +45,7 @@ October and we are now actively developing on this platform using
 i.e. hair: shirt, pants and socks(tm) :)
       
 ## Coming soon
+
 - Real time GPS track and accelerometer data from
 Bluetooth LE based sensor arrays for GPS and 9 axis
 (accel3d, mag3d, gyro3d) coming very soon. 
