@@ -37,7 +37,7 @@ data LogEventFrame = LogEventFrame
   { datetime_ :: !(Maybe UTC)
   , position_ :: !(Maybe WGS84Position)
   , maxAccel_ :: !Accel3D
-  }
+  } deriving (Show)
 
 {- INLINE -}
 timestamp :: LogEventFrame -> Maybe UTC
