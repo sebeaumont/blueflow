@@ -1,4 +1,7 @@
-{-# LANGUAGE OverloadedStrings, GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE OverloadedStrings, GeneralizedNewtypeDeriving, ExistentialQuantification #-}
+-- | This module deprecated in favour of new spatialite-simple package 
+-- whcich was inspired by this. 
 module Deepblue.Database.GIS.Internal
     ( GIS
     , GISError  
@@ -25,6 +28,7 @@ execGIS (GIS d) = exec d
 data GISError = Extension T.Text
               | Database T.Text
               | Schema T.Text
+              | Query T.Text
               deriving (Show)
 
 -- | Open Sqlite3 database and initialise SpatiaLite GIS extensions
@@ -63,10 +67,15 @@ IO then we can do alternaticves and guards whcih would help here and
 be nice for the user of this type...    
 loadSpatialExtension :: Database -> IO (Either (Error, SD.Utf8) ())
 loadSpatialExtension c = SD.exec c "select load_extension('mod_spatialite')"
--}
 
+
+loadExtensionSQL :: Database -> T.Text -> 
 -- XXX don't like failure in libraries... is this the only way to get
 -- Alternative IO to work? Also we should short circuit any known errors
+-}
+
+
+
 
 loadExtension :: Database -> T.Text -> IO (Either (Error, SD.Utf8) ())
 loadExtension d l = do
