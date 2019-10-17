@@ -20,6 +20,34 @@ packages:
     commit: 8e7f7b1cc165462f28f9b5c31b85beedb1b99188
 - completed:
     cabal-file:
+      size: 1389
+      sha256: da5c1ca566690a0f3cf84c66babb3c3e60740877e4b90b8646269147e13b9cfc
+    name: spatialite-simple
+    version: 0.1.0.0
+    git: https://github.com/sebeaumont/spatialite-simple.git
+    pantry-tree:
+      size: 586
+      sha256: e7c1f95bced6980210898da05a81ed96d0bf390b5a3d4a91007efdbb106e6f24
+    commit: f80f5d7d381c0bb474c42633eaf072a72f2a4b37
+  original:
+    git: https://github.com/sebeaumont/spatialite-simple.git
+    commit: f80f5d7d381c0bb474c42633eaf072a72f2a4b37
+- completed:
+    cabal-file:
+      size: 2938
+      sha256: b62e27f6d6e9299f46be99bca47442e8aef04ab98b201cd568c3c04c6831202b
+    name: sqlite-simple
+    version: 0.4.16.0
+    git: https://github.com/sebeaumont/sqlite-simple.git
+    pantry-tree:
+      size: 1995
+      sha256: 68fbe4f81c18a799f6c3aaee66eafc35a66dc8209cba3243d112832b678b44a4
+    commit: 733fcecc5dd9336baa1f6a072c11375b1b61165c
+  original:
+    git: https://github.com/sebeaumont/sqlite-simple.git
+    commit: 733fcecc5dd9336baa1f6a072c11375b1b61165c
+- completed:
+    cabal-file:
       size: 3718
       sha256: 34fdbb2ffb165e4a4ff0384f7b89f630bf41f555c1701821049fcc207b76205c
     name: direct-sqlite
