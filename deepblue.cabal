@@ -34,6 +34,8 @@ library
                            , Deepblue.Graphics.Status
                            , Deepblue.Graphics.World
                            , Deepblue.Graphics.Interact
+                           , Deepblue.Database.Monad
+                           , Deepblue.Database.Schema
         other-modules:       
                            
         build-depends:       base
@@ -44,12 +46,12 @@ library
                            , sort
                            , containers
                            , streamly
-                           --, direct-sqlite
+                           , sqlite-simple
                            , formatting
-                           , spatialite-simple
+                           --, spatialite-simple
                            --, hnetcdf
                            --, random
-                           --, mtl
+                           , mtl
                            --, repa
                            --, vector
                            --, hmatrix
@@ -100,7 +102,7 @@ executable check
   build-depends:       base
                      , cmdargs
                      , deepblue
-                     , spatialite-simple
+                     , sqlite-simple
                      , text
 
   hs-source-dirs:      tst

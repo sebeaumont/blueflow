@@ -49,17 +49,17 @@ packages:
 - completed:
     cabal-file:
       size: 3718
-      sha256: 34fdbb2ffb165e4a4ff0384f7b89f630bf41f555c1701821049fcc207b76205c
+      sha256: c6f5d0562abead84eded76a03a260359a3699a4f11c0e3a6a71b85b477fdbaf8
     name: direct-sqlite
-    version: 2.3.25
+    version: 2.3.26
     git: https://github.com/sebeaumont/direct-sqlite.git
     pantry-tree:
       size: 1090
-      sha256: 751a38ac7db247d96753d0d43bdef57c38e07795c71414126ccf165acc4fd38d
-    commit: 36f3a7aa87c538a888a22d0077314fa0996ed44d
+      sha256: abb530a6c0731c372f408faa85abae7a63b44e7dd8e5d440ec7f48f24a56c6c9
+    commit: ca4762576cb331bba212660e61f44643c435f890
   original:
     git: https://github.com/sebeaumont/direct-sqlite.git
-    commit: 36f3a7aa87c538a888a22d0077314fa0996ed44d
+    commit: ca4762576cb331bba212660e61f44643c435f890
 - completed:
     hackage: time-1.9.3@sha256:8f1b5448722a12a952248b356c9eb366e351226543d9086a2da71270522d5f45,5679
     pantry-tree:

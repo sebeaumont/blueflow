@@ -2,21 +2,22 @@
 
 module Main where
 
-import Database.GIS.SpatiaLite
-import Database.GIS.Schema
---import Control.Monad
 import Control.Monad.IO.Class (liftIO)
-import qualified Data.Text as T
+import Data.Maybe
+import Deepblue.Data.Time
+import Deepblue.Database.Monad
+import Deepblue.Database.Schema
+
+-- | Hacking and testing...
 
 main :: IO ()
 main = do
   putStrLn "Hello Earth..."
-  runGIS "dat/deepblue.db" $ do
-    cnt <- queryGIS_ "select count(*) from  events" 
-    liftIO $ putStrLn (show (cnt :: [Only Integer]) ++ " events are recorded in the captain's log")
-    -- 
-    
-    foo <- queryGIS "select datetime(timestamp), lat, lon, x, y, z, AsText(position) from events where z < ?" (Only (-14.0 :: Double)) 
-    mapM_ (liftIO .print) (foo :: [(T.Text, Double, Double, Double, Double, Double, T.Text)])
+  runDB "dat/deepblue.db" $ do
+    cnt <- queryDB_ "select count(*) from  events" 
+    liftIO $ putStrLn (show (cnt :: [Only Integer]) ++ " events are recorded in the craft's log")
 
-
+    -- get some events proper job
+    events <- getEventsBetween (fromJust $ parseISOtime "2019-07-03T07:36:00Z") 
+                               (fromJust $ parseISOtime "2019-07-03T07:46:00Z")
+    mapM_ (liftIO . print) events
