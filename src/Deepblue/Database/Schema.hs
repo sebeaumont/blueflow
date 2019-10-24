@@ -8,13 +8,10 @@ module Deepblue.Database.Schema
 import Deepblue.Data.Time
 import Deepblue.Database.Monad
 import Database.SQLite.Simple
-import Data.Text as T
+--import Data.Text as T
 
--- | event table in GIS database
-eventTable :: T.Text
-eventTable = "events"
 
--- event record in the database
+-- | An event record in the database
 data Event = Event { evTimestamp :: UTC
                       , evLatitude :: Double
                       , evLongitude :: Double

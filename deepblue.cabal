@@ -45,7 +45,7 @@ library
                            , text
                            , sort
                            , containers
-                           , streamly
+                           --, streamly
                            , sqlite-simple
                            , formatting
                            --, spatialite-simple
