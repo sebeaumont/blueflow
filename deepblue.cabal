@@ -34,9 +34,9 @@ library
                            , Deepblue.Graphics.Status
                            , Deepblue.Graphics.World
                            , Deepblue.Graphics.Interact
-                           , Deepblue.Database.GIS
-                           , Deepblue.Database.GIS.Schema
-        other-modules:       Deepblue.Database.GIS.Internal
+                           , Deepblue.Database.Monad
+                           , Deepblue.Database.Schema
+        other-modules:       
                            
         build-depends:       base
                            , geodetics
@@ -45,11 +45,13 @@ library
                            , text
                            , sort
                            , containers
-                           , streamly
-                           , direct-sqlite
+                           --, streamly
+                           , sqlite-simple
+                           , formatting
+                           --, spatialite-simple
                            --, hnetcdf
                            --, random
-                           --, mtl
+                           , mtl
                            --, repa
                            --, vector
                            --, hmatrix
@@ -58,6 +60,8 @@ library
         hs-source-dirs:      src
         default-language:    Haskell2010
         ghc-options:         -O3 -Wall
+        extra-libraries: sqlite3
+        extra-lib-dirs: /usr/local/opt/sqlite3/lib /usr/local/lib
         
         
 -- main plotter exe                     
@@ -86,6 +90,22 @@ executable loadgeo
                      , deepblue
 
   hs-source-dirs:      utl
+  default-language:    Haskell2010
+  ghc-options: -O3 -Wall -threaded
+  extra-libraries: sqlite3
+  extra-lib-dirs: /usr/local/opt/sqlite3/lib /usr/local/lib
+
+executable check
+  main-is:             Main.hs
+  -- other-modules:    
+  -- other-extensions:    
+  build-depends:       base
+                     , cmdargs
+                     , deepblue
+                     , sqlite-simple
+                     , text
+
+  hs-source-dirs:      tst
   default-language:    Haskell2010
   ghc-options: -O3 -Wall -threaded
   extra-libraries: sqlite3

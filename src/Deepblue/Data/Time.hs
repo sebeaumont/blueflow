@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric, OverloadedStrings, OverloadedLabels, FlexibleInstances #-}
+{-# LANGUAGE OverloadedStrings, OverloadedLabels, FlexibleInstances #-}
 module Deepblue.Data.Time ( UTC
                           , parseISOtime
                           , timeDiffSeconds

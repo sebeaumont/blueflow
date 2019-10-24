@@ -37,7 +37,7 @@ data LogEventFrame = LogEventFrame
   { datetime_ :: !(Maybe UTC)
   , position_ :: !(Maybe WGS84Position)
   , maxAccel_ :: !Accel3D
-  }
+  } deriving (Show)
 
 {- INLINE -}
 timestamp :: LogEventFrame -> Maybe UTC
@@ -121,6 +121,7 @@ eventsFromFile :: FilePath -> IO EventFrames
 eventsFromFile f =
   withFile f ReadMode (storeEvents 1 Map.empty)
 
+  
 -- helper XXX see storeMArks for proper way to do this -- this loses last frame!
 storeEvents :: Int -> EventFrames -> Handle -> IO EventFrames
 storeEvents n m h = do

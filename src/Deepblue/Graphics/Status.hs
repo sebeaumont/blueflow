@@ -17,7 +17,7 @@ data StatusArea = StatusArea {
     }
 
 initStatusArea :: Point -> Point -> StatusArea
-initStatusArea p s = StatusArea { pos_ = p, scale_ = s, content = "deepblue - Copyright(c) 2019 Simon Beaumont"}
+initStatusArea p s = StatusArea { pos_ = p, scale_ = s, content = "blueflow - Copyright(c) 2019 Simon Beaumont"}
 
 setContent :: StatusArea -> String -> StatusArea
 setContent a s = a {content = s}

@@ -25,7 +25,7 @@ import Graphics.Gloss.Interface.IO.Interact
 startWorld :: IO ()
 startWorld = do
   world <- initWorld
-  play FullScreen background 1 world render handle step
+  play FullScreen background 1 world renderWorld handle step
 
 -- "game" state
 data World = World 
@@ -69,8 +69,8 @@ initWorld = do
     , time_ = 1
     }
 
-render :: World -> Picture
-render w = -- Get track points from event map
+renderWorld :: World -> Picture
+renderWorld w = -- Get track points from event map
   applyViewPortToPicture (vp_ w) $ pictures
                  [ plotUTMGrid
                  -- downsampled track could be pre-computed?
@@ -101,7 +101,7 @@ step t w =
         vp'  = case position =<< le of 
                 Nothing  -> vp
                 Just pos -> let (x,y) = positionToPoint pos in vp {viewPortTranslate = (-x,-y)}
-    in w {status_ = setContent sa (format le), time_ = tn + t, vp_ = vp'} 
+    in w {status_ = setContent sa (render le), time_ = tn + t, vp_ = vp'} 
 
 -- | Handle user i/o events
 handle :: Event -> World -> World
