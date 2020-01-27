@@ -19,9 +19,7 @@ class Display a where
   render :: a -> String
 
 instance Display (Maybe LogEventFrame) where
-  render m = case m of
-    Nothing -> "No event"
-    Just e -> render e
+  render = maybe "No event" render
 
 instance Display LogEventFrame where
   render f = unwords [render ts, render pos, render ma, printf "%.6f" (norm ma)]
@@ -30,9 +28,7 @@ instance Display LogEventFrame where
           ma = maximumAccel f
 
 instance Display (Maybe UTC) where
-  render t = case t of
-    Nothing -> ""
-    Just u -> render u
+  render = maybe "" render
 
 instance Display UTC where
   render = formatUTC
@@ -41,9 +37,7 @@ instance Display WGS84Position where
   render = show
 
 instance Display (Maybe WGS84Position) where
-  render p = case p of
-    Nothing -> "No Fix"
-    Just w -> render w
+  render = maybe "No Fix" render
 
 instance Display Accel3D where
   render a = unwords $ map (printf "%.3f") (asList a)

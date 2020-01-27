@@ -1,6 +1,5 @@
 module Deepblue.Graphics.Interact ( eventHandler
-                                  
-    ) where
+                                  ) where
         
 --import qualified Debug.Trace as Debug 
 import qualified Data.Map.Strict as Map
@@ -36,7 +35,7 @@ keymap =
 keyHandler :: Key -> Maybe (Float -> ViewPort -> ViewPort)
 keyHandler k = Map.lookup k keymap
 
-{- TOD need toscale movements under zooms -}
+{- TODO need toscale movements under zooms -}
 
 {-# INLINE viewPortUpdate #-}
 viewPortUpdate :: Command -> Float -> ViewPort -> ViewPort

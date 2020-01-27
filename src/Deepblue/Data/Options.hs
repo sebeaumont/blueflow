@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable #-}
+-- | Commnand line option processing module.
 
 module Deepblue.Data.Options ( getCommandArgs
                              , eventfile
@@ -10,7 +11,8 @@ module Deepblue.Data.Options ( getCommandArgs
 
 import System.Console.CmdArgs
 
--- command line
+-- command line and initial parameters
+
 data Deepblue = Deepblue { eventfile :: FilePath
                          , markfile :: FilePath
                          , minAccel :: Double

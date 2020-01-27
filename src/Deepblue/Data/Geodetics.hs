@@ -13,7 +13,7 @@ import Numeric.Units.Dimensional.Prelude (degree, (/~), meter)
 import qualified Data.Text as T
 
 -- | Latitide and longtitude w.r.t. WSG84 elipsoid conventionally used
--- on (electronic) charts and GPS systems
+-- on charts and GPS systems
 
 type WGS84Position = Geodetic WGS84
 
@@ -25,6 +25,7 @@ gpWGS84 = readGroundPosition WGS84
 posToLatLong :: WGS84Position -> (Double, Double)
 posToLatLong p = (latitude p /~ degree, longitude p /~ degree)
 
+-- XX this is a workaround for a bug (now fixed IIRC) in geodetics.
 distance :: WGS84Position -> WGS84Position -> Double
 distance p1 p2 = case groundDistance p1 p2 of
   Nothing -> 0
