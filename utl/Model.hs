@@ -1,6 +1,6 @@
 module Main where
 
-import Grenade
+-- import Grenade
 
 
 main :: IO ()
