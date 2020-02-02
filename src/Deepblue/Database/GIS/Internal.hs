@@ -103,5 +103,5 @@ ensureSpatialSchema c = exec c "SELECT InitSpatialMetaData()"
 
 -- pro tem for ghci
 ex :: GIS -> T.Text -> IO ()
-ex (GIS d) q = execPrint d q
+ex (GIS d) = execPrint d
     
