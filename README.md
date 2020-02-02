@@ -50,12 +50,11 @@ hope to contribute back to that great project.
 
 ### POC: Integrated SpatiaLite into SQLite GIS module
 
-[direct-sqlite](https://github.com/sebeaumont/direct-sqlite)
- Making this work well and reliably across platforms requires some fiddling
+[direct-sqlite](https://github.com/sebeaumont/direct-sqlite) Making
+ this work well and reliably across platforms requires some fiddling
  as we need to link against an system installed sqlite library and
- cautiously load mod_spatialite into SQLite. WIP but may be the
- future for all relevant data managment and spatial reasoning.
- Track this on ```feature/GIS``` branch.
+ cautiously load ```mod_spatialite``` into SQLite.  Track this on
+ ```feature/GIS``` branch (now closed).
 
 ### Ported the display and real time analysis application to Jetson
 
@@ -84,11 +83,11 @@ using bindings to bluez on Linux. Not no eay to do this in C or Haskell
 unless we can use the Core.Bluetooth framework on Mac OS unless libbluez
 is available.
 
-### Analysis of acceleration data etc. using
+### Analysis of acceleration data etc.
 
-[Grenade](https://github.com/HuwCampbell/grenade) RNNs (LSTM)
-can we distinguish types of event using a neural net. Can we
-teach the system to sail the boat?
+We may look at [Grenade](https://github.com/HuwCampbell/grenade) RNNs (LSTM)
+e.g. can we distinguish types of event using a neural net. Can we
+teach the system to sail the boat? Win races?
 
 ## On the wish list
 
