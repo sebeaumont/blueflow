@@ -1,4 +1,3 @@
-{-# LANGUAGE DeriveGeneric, OverloadedStrings, OverloadedLabels, FlexibleInstances #-}
 module Deepblue.Data.IO ( module Deepblue.Data.Events
                         , module Deepblue.Data.Marks
                         ) where

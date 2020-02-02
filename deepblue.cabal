@@ -25,6 +25,7 @@ library
                            , Deepblue.Data.Geodetics.UTMGrid
                            , Deepblue.Data.Acceleration
                            , Deepblue.Data.Events
+                           , Deepblue.Data.Events.NMEA
                            , Deepblue.Data.Marks
                            , Deepblue.Data.Time
                            , Deepblue.Data.Display
@@ -81,7 +82,7 @@ executable deepblue
   extra-libraries: sqlite3
   extra-lib-dirs: /usr/local/opt/sqlite3/lib /usr/local/lib
   
-executable loadgeo
+executable load
   main-is:             Main.hs
   -- other-modules:    
   -- other-extensions:    

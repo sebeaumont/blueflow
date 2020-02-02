@@ -5,19 +5,14 @@ import Control.Monad
 --import Deepblue.Data.Events
 import Deepblue.Data.Display
 import Deepblue.Data.Marks
-
-
---import Text.Printf
+import Deepblue.Data.Events.NMEA
 
 main :: IO ()
-main = do
-  ms <- marksFromFile "dat/marks.tsv" -- hack de hack
-  --db <- initGIS("test.db")
-  --print db
-  --events <- eventsFromFile "/Users/seb/data/BlueBox/Events/events-030719.tsv"
-  -- velocities
-  -- forM_ (velocities events) (putStrLn . printf "%.1f")
-  -- events formatted to stdout (tsv)
-  forM_ ms (putStrLn . render)
-  
-  
+main = messagesFromFile "dat/NMEA0183.txt"
+  --  
+  -- printMarksInFile "dat/marks.tsv"
+
+printMarksInFile :: FilePath -> IO ()  
+printMarksInFile path = do
+  ms <- marksFromFile path 
+  forM_ ms (putStrLn . render)  
