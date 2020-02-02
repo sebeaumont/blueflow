@@ -94,16 +94,32 @@ import System.IO
 -}
 
 -- | WIP: model well known NMEA0183 message terms.
-data NMEA0183 = GPRMC 
-              | PAXYZ 
-              | PMXYZ 
+data NMEA0183 = GPRMC
+              -- $GPRMC,113348.181,V,,,,,0.75,21.49,120120,,,N*75
+              --        HHMMSS.sss
+              -- $GPRMC,113349.181,A,5038.5579,N,00123.8321,W,0.31,30.95,120120,,,A*4C
+              | PAXYZ
+              -- $PAXYZ,-18249,15826,-6227
+              | PMXYZ
+              -- $PMXYZ,14093,15712,14554              
               | PGXYZ
+              -- $PGXYZ,26214,-16294,28836              
               | RAW T.Text
   deriving (Show, Read)
 
 -- | Parse nmea0183 sentence
-parseMessage :: T.Text -> NMEA0183
-parseMessage = RAW . T.strip
+parseMessage :: T.Text -> Maybe NMEA0183
+parseMessage = Just . RAW . T.strip
+
+{-
+ basic stuff (fail fast):
+  starts with "$", ends with "\r\n"
+  chop into fields
+  has checksum if so verify
+  message specific:
+   parse data fields
+-}
+
 
 -- | Read event data from a file - TODO store in DB
 messagesFromFile :: FilePath -> IO ()
@@ -119,6 +135,7 @@ storeMessages h = do
   if eof then return ()
   else storeMessages h
 
--- | NMEA200 is a more sophisticated binary protocol using canBUS at
+
+-- | NMEA2000 is a more sophisticated binary protocol using canBUS at
 --   the physical layer.
 data NMEA2000

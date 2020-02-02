@@ -9,8 +9,10 @@ filtered by event acceleration and plot static features (marks).
 This was motivated by my reasearch on collision and
 grounding event detection for small craft.
 
-We are currently expanding from flat file data files into using the SpatiaLite
-GIS backend this is a work in progress best tracked on its own development branch.
+We are currently migrating from flat file data files to using the
+SQLite database. We have experimented with SpatiaLite GIS module but
+the jury is still out on the utility vs. maintainability aspects (see
+below).
 
 We have done some experiments using netCDF files which might be interesting
 way of standardising on layers.  We'd really like to support grib as these are
@@ -40,10 +42,11 @@ hope to contribute back to that great project.
  in the database may not really work for us. The idea was to transform our position data
  (GPS and charted objects) via. UTM zone transformation to cartesian grid at
  load time does not apply for realtime GPS tracking. The actual drawing (Gloss/OpenGL)
- uses pairs of floats - granted that transforms from typesafe dimensioned data (WGS84 positions)
+ uses pairs of floats. Given that transforms from typesafe dimensioned data (WGS84 positions)
  shows up as our bottleneck when profiling plotting we could factor a hybrid and more simple solution
  using vanilla SQLite and storing the graphic points and computing bounding boxes at the graphical
- level rather than the geodetic, while transforming the GPS position in realtime.
+ level rather than the geodetic, while transforming the GPS WGS84
+ positions to UTMGrid points in realtime.
 
 ### POC: Integrated SpatiaLite into SQLite GIS module
 
@@ -65,11 +68,6 @@ hope to contribute back to that great project.
  ```ghc 8.8.1``` as our primary compiler and similarly on OS X
 
 ## Coming soon
-
-### Real time GPS track and accelerometer data from
-
-Bluetooth LE based sensor arrays for GPS and 9 axis
-(accel3d, mag3d, gyro3d) coming very soon.
 
 ### Mobile app to support downloading and analysis of `BlueBox` data
 
