@@ -17,7 +17,6 @@ module Deepblue.Data.Marks ( Mark
 
 import Deepblue.Data.Geodetics
 import Deepblue.Graphics.Colors
-import Deepblue.Data.Display
 
 import System.IO
 import Text.Printf
@@ -83,17 +82,6 @@ instance Show Mark where
     (show $ colorOfMark m)
     (show $ shapeOfMark m)
 
-instance Display Mark where
-  format m = 
-    printf "%s\t%s\t%s\t%.6f\t%.6f\t%s\t%s" 
-      (nameOfMark m)  
-      (descriptionOfMark m)
-      (show $ typeOfMark m)
-      lat
-      lon
-      (show $ colorOfMark m)
-      (show $ shapeOfMark m)
-    where Just (lat, lon) = posToLatLong <$> positionOfMark m
 ------------
 -- Lights --
 ------------

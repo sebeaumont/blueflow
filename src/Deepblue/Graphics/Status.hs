@@ -13,19 +13,21 @@ import Graphics.Gloss.Data.ViewPort
 data StatusArea = StatusArea { 
     pos_ :: Point,
     scale_ :: Point,
-    content :: String 
+    margin_ :: Float,
+    message_ :: String 
     }
 
 initStatusArea :: Point -> Point -> StatusArea
-initStatusArea p s = StatusArea { pos_ = p, scale_ = s, content = "deepblue - Copyright(c) 2019 Simon Beaumont"}
+initStatusArea p s = StatusArea { pos_ = p, scale_ = s, margin_ = 3, message_ = "saildata - Copyright(C) 2019,2020 Simon Beaumont"}
 
 setContent :: StatusArea -> String -> StatusArea
-setContent a s = a {content = s}
+setContent a s = a {message_ = s}
 
 statusArea :: StatusArea -> ViewPort-> Picture
 statusArea a vp = 
     let (x,y) = invertViewPort vp (pos_ a)
         s = viewPortScale vp
         (sx,sy) = scale_ a
-    -- TODO need to scale the offsets  -- hmm still not quite right on extreme zooms! 
-    in translate (x+3*sx) (y+3*sy) $ color black $ scale (sx/s) (sy/s) $ text (content a) 
+        d = margin_ a
+    -- TODO -- hmm margin still not quite right on extreme zooms! 
+    in translate (x+d*sx) (y+d*sy) $ color black $ scale (sx/s) (sy/s) $ text (message_ a) 

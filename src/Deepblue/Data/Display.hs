@@ -1,47 +1,55 @@
 {-# LANGUAGE FlexibleInstances #-}
 module Deepblue.Data.Display ( Display
-                             , format
+                             , render
                              ) where
 
 import Deepblue.Data.Acceleration
 import Deepblue.Data.Geodetics
 import Deepblue.Data.Events
---import Deepblue.Data.Marks
+import Deepblue.Data.Marks
 import Deepblue.Data.Time
 
 import Text.Printf
-import Data.List
+-- TODO: import Formatting 
+
+-- hack de hack
+-- not really happy with any of this but at least its all in once place
 
 class Display a where
-  format :: a -> String
+  render :: a -> String
 
 instance Display (Maybe LogEventFrame) where
-  format m = case m of
-    Nothing -> "No event"
-    Just e -> format e
+  render = maybe "No event" render
 
 instance Display LogEventFrame where
-  format f = intercalate " " [format ts, format pos, format ma, printf "%.6f" (norm ma)]
+  render f = unwords [render ts, render pos, render ma, printf "%.6f" (norm ma)]
     where ts = timestamp f
           pos = position f
           ma = maximumAccel f
 
 instance Display (Maybe UTC) where
-  format t = case t of
-    Nothing -> ""
-    Just u -> format u
+  render = maybe "" render
 
 instance Display UTC where
-  format = formatUTC
+  render = formatUTC
 
 instance Display WGS84Position where
-  format p = printf "%f" (show p)
+  render = show
 
 instance Display (Maybe WGS84Position) where
-  format p = case p of
-    Nothing -> "No Fix"
-    Just w -> format w
+  render = maybe "No Fix" render
 
 instance Display Accel3D where
-  format a = intercalate " " $ map (printf "%.3f") (asList a)
+  render a = unwords $ map (printf "%.3f") (asList a)
 
+instance Display Mark where
+  render m = 
+    printf "%s\t%s\t%s\t%.6f\t%.6f\t%s\t%s" 
+      (nameOfMark m)  
+      (descriptionOfMark m)
+      (show $ typeOfMark m)
+      lat
+      lon
+      (show $ colorOfMark m)
+      (show $ shapeOfMark m)
+    where Just (lat, lon) = posToLatLong <$> positionOfMark m

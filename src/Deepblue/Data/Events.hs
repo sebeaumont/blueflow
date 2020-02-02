@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedLabels, FlexibleInstances #-}
+-- {-# LANGUAGE OverloadedLabels, FlexibleInstances #-}
 
 module Deepblue.Data.Events (
   -- aggregate map
@@ -37,28 +37,23 @@ data LogEventFrame = LogEventFrame
   { datetime_ :: !(Maybe UTC)
   , position_ :: !(Maybe WGS84Position)
   , maxAccel_ :: !Accel3D
-  }
+  } deriving (Show)
 
-{- INLINE -}
 timestamp :: LogEventFrame -> Maybe UTC
 timestamp = datetime_
 
-{- INLINE -}
 position :: LogEventFrame -> Maybe WGS84Position
 position = position_
 
-{- INLINE -}
 maximumAccel :: LogEventFrame -> Accel3D
 maximumAccel = maxAccel_
 
 --------------------------------------------------
 -- Some parsers from Text to log event components
 
-{- INLINE -}
 parseVector :: T.Text -> [Double]
 parseVector s = read $ T.unpack s
 
-{- INLINE -}
 parseEvent :: Int -> T.Text -> LogEventFrame
 parseEvent _ s =
   let fields = T.split (=='\t') s
@@ -92,11 +87,9 @@ type EventFrames =  Map.IntMap LogEventFrame
 frames :: EventFrames -> [LogEventFrame]
 frames = Map.elems
 
-{-# INLINE getEvent #-}
 getEvent :: Int -> EventFrames -> Maybe LogEventFrame
 getEvent = Map.lookup 
 
-{-# INLINE numEvents #-}
 numEvents :: EventFrames -> Int 
 numEvents = Map.size
 
@@ -112,7 +105,6 @@ eventsBetweenTimes  s e = Map.filter (inRange s e) where
 takeEvents :: Int -> EventFrames -> EventFrames
 takeEvents i = Map.filterWithKey (\k _ -> k < i)
 
-{-# INLINE trackPositions #-}
 trackPositions :: EventFrames -> [WGS84Position]
 trackPositions evs = [p | Just p <- [position e | e <- Map.elems evs]]
 
@@ -121,7 +113,8 @@ eventsFromFile :: FilePath -> IO EventFrames
 eventsFromFile f =
   withFile f ReadMode (storeEvents 1 Map.empty)
 
--- helper XXX see storeMArks for proper way to do this -- this loses last frame!
+
+-- helper XXX see storeMarks for a correct way to do this -- this loses last frame!
 storeEvents :: Int -> EventFrames -> Handle -> IO EventFrames
 storeEvents n m h = do
   line <- TIO.hGetLine h
