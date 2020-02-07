@@ -21,4 +21,4 @@ feintGrey = makeColor 0.1 0.1 0.1 0.2
 
 -- color for status messages
 transBlack :: Color
-transBlack = makeColor 0.0 0.0 0.0 0.2 
+transBlack = makeColor 0.0 0.0 0.0 1.0 

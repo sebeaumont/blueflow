@@ -30,4 +30,4 @@ statusArea a vp =
         (sx,sy) = scale_ a
         d = margin_ a
     -- TODO -- hmm margin still not quite right on extreme zooms! 
-    in translate (x+d*sx) (y+d*sy) $ color black $ scale (sx/s) (sy/s) $ text (message_ a) 
+    in translate (x+d*sx) (y+d*sy) $ scale (sx/s) (sy/s) $ color black $ text (message_ a) 

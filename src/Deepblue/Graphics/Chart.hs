@@ -105,7 +105,7 @@ plotPoint c (x,y) = translate x y $ color c $ circleSolid 2
 
 -- | Plot marks with positions 
 plotMarks :: [Mark] -> Picture
-plotMarks ms = pictures [p | Just p <- [plotMark m | m <- ms]]
+plotMarks ms = pictures (catMaybes [plotMark m | m <- ms])
 
 {- INLINE -}
 plotMark :: Mark -> Maybe Picture
