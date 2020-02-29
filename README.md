@@ -1,4 +1,9 @@
-# Deepblue by Saildata
+# Deepblue
+
+This package and its programs are essentially now an abandoned prototype.
+We are extracting any goodness and ways of doing things into seperate packages
+it still remains our favoured demo and data visualisation app for the time being
+but is not now actively developed while we concentrate on a more modular system.
 
 A package and of library and programs to chart and plot wind, tide, marks, tracks, events
 and other navigational stuff.
